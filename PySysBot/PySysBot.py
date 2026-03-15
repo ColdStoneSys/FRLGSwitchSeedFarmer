@@ -1,6 +1,4 @@
-import sys
-import socket
-import binascii
+import sys, socket, binascii
 from time import sleep
 
 class PySysBot(object):
