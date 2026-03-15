@@ -1,14 +1,9 @@
 # Go to root/test of PyNXBot
-import signal
-import sys
-import json
-import time
-import csv
-sys.path.append('../')
+import signal, json, time, csv
 
-from nxbot import FRLGBot
+from PySysBot import FRLGBot
 
-config = json.load(open("../config.json"))
+config = json.load(open("config.json"))
 b = FRLGBot(config["IP"])
 
 def signal_handler(signal, advances): #CTRL+C handler
