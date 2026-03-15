@@ -117,9 +117,7 @@ while seedsCounter < seedsToCollect and APressValue <= APressUpperLimit and cons
 
         with open(outputFileName, 'a', newline='') as file:
             writer = csv.writer(file)
-            hexString = hex(initialSeed)[2:]
-            hexSeedFour = '0'*(4-len(hexString))+hexString
-            writer.writerow([hexSeedFour, APressValue, toc-tic])
+            writer.writerow([f"{initialSeed:04X}", APressValue, toc-tic])
 
         repeatCounter+=1
 
