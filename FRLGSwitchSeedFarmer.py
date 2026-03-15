@@ -1,9 +1,10 @@
 # Go to root/test of PyNXBot
-import signal, json, csv
+import signal, json, csv, os
 from time import time
 from PySysBot import FRLGBot
 
-config = json.load(open("config.json"))
+with open("config.json", "r", encoding="utf-8") as f:
+    config = json.load(f)
 b = FRLGBot(config["IP"])
 APressInitialValue = config["APressInitialValue"]
 APressUpperLimit = config["APressUpperLimit"]
@@ -39,15 +40,10 @@ resetTime = time()
 consecutiveFailures = 0
 
 # Make file with header if file did not already exist
-try:
-    file = open(outputFileName, "r")
-except FileNotFoundError:
-    file = open(outputFileName, "w", newline="")
-    writer = csv.writer(file)
-    writer.writerow(["Seed", "Frame", "Time"])
-finally:
-    if file is not None:
-        file.close()
+if not os.path.exists(outputFileName):
+    with open(outputFileName, "w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(["Seed", "Frame", "Time"])
 
 while (
     seedsCounter < seedsToCollect
@@ -114,7 +110,7 @@ while (
             f"{seedsCounter:04d} - {initialSeed:04X} | {APressValue} ({(toc - tic):.4f})"
         )
 
-        with open(outputFileName, "a", newline="") as file:
+        with open(outputFileName, "a", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
             writer.writerow([f"{initialSeed:04X}", APressValue, toc - tic])
 
