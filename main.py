@@ -53,6 +53,8 @@ while (
     # TODO: actual exception types
     except Exception:
         print("Error reading, resetting")
+        tic = 0
+        toc = 0
         bot.restart_game()
         bot.pause(1)
         reset_time = time()
@@ -63,6 +65,8 @@ while (
     if tic == 0 and time() - reset_time > 10:
         # We failed to properly boot, try again
         print("Failed to boot")
+        tic = 0
+        toc = 0
         consecutive_failures += 1
         bot.restart_game()
         bot.pause(1)
