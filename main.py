@@ -46,7 +46,8 @@ while (
 ):
     try:
         vblank_counter = bot.read_vblank_counter()
-    except Exception as e:
+    # TODO: actual exception types
+    except Exception:
         print("Error reading, resetting")
         bot.restart_game()
         bot.pause(1)
