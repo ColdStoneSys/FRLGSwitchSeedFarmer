@@ -118,7 +118,9 @@ while seedsCounter < seedsToCollect and APressValue <= APressUpperLimit and cons
         print(f"{seedsCounter:04d} - {initialSeed:04X} | {APressValue} ({VBlankCounter}) ({(toc-tic):.4f})")
         with open(outputFileName, 'a', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow([initialSeed, APressValue, tic-toc])
+            hexString = hex(initialSeed)[2:]
+            hexSeedFour = '0'*(4-len(hexString))+hexString
+            writer.writerow([hexSeedFour, APressValue, toc-tic])
         repeatCounter+=1
         if repeatCounter == repeatTimes:
             repeatCounter = 0
