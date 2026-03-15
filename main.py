@@ -51,7 +51,9 @@ while (
             print(f"VBlank: {vblank_counter}")
     # TODO: actual exception types
     except Exception:
-        print("Error reading RAM, restarting the game and resetting the connection in 15 seconds")
+        print(
+            "Error reading RAM, restarting the game and resetting the connection in 15 seconds"
+        )
         tic = 0
         toc = 0
         bot.pause(15)
@@ -96,7 +98,9 @@ while (
                 bot.pause(0.001)
         # TODO: actual exception types
         except Exception:
-            print("Error reading RAM, restarting the game and resetting the connection in 15 seconds")
+            print(
+                "Error reading RAM, restarting the game and resetting the connection in 15 seconds"
+            )
             tic = 0
             toc = 0
             bot.pause(15)
@@ -118,10 +122,12 @@ while (
 
         # Collect data
         try:
-            initialSeed = bot.read_initial_seed()
+            initial_seed = bot.read_initial_seed()
         # TODO: actual exception types
         except Exception:
-            print("Error reading RAM, restarting the game and resetting the connection in 15 seconds")
+            print(
+                "Error reading RAM, restarting the game and resetting the connection in 15 seconds"
+            )
             tic = 0
             toc = 0
             bot.pause(15)
@@ -132,12 +138,12 @@ while (
 
         seeds_counter += 1
         print(
-            f"{seeds_counter:04d} - {initialSeed:04X} | {a_press_value} ({(toc - tic):.4f})"
+            f"{seeds_counter:04d} - {initial_seed:04X} | {a_press_value} ({(toc - tic):.4f})"
         )
 
         with open(OUTPUT_FILE_NAME, "a", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
-            writer.writerow([f"{initialSeed:04X}", a_press_value, toc - tic])
+            writer.writerow([f"{initial_seed:04X}", a_press_value, toc - tic])
 
         repeat_counter += 1
 
