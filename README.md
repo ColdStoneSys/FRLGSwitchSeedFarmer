@@ -35,6 +35,6 @@ Name of CSV to store results.
 * [wwwwwwzx](https://github.com/wwwwwwzx) for [PyNXBot](https://github.com/wwwwwwzx/PyNXBot)
 * [kwsch](https://github.com/kwsch) for [SysBot.NET](https://github.com/kwsch/SysBot.NET)
 * [Lusamine](https://github.com/Lusamine) for [SySBot.NET fork](https://github.com/Lusamine/SysBot.NET/tree/moarencounterbots)
-* [Lincoln-LM](https://github.com/Lincoln-LM/Lincoln-LM) for the research and for [ten-lines](https://lincoln-lm.github.io/ten-lines)
+* [lincoln-lm](https://github.com/lincoln-lm) for the research and for [ten-lines](https://lincoln-lm.github.io/ten-lines)
 * [Shao](https://github.com/c-poole) for the research and for improving the code
 * [notblisy](https://github.com/notblisy) and [papajefe](https://github.com/papajefe) for the research
