@@ -32,7 +32,8 @@ jobs:
       - name: Freeze
         run: |
           cxfreeze --script main.py --target-dir dist --target-name=frlg_switch_seed_farmer
-          cxfreeze --script process_seeds.py --target-dir dist --target-name=frlg_switch_seed_processor
+          cxfreeze --script process_seeds.py --target-dir dist_processor --target-name=frlg_switch_seed_processor
+          cp -r dist_processor/* dist/
           cp config.json dist
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
