@@ -7,11 +7,11 @@ with open("config.json", "r", encoding="utf-8") as f:
     config = json.load(f)
 
 bot = SeedBot(config["IP"])
-A_PRESS_INITIAL_VALUE = config["APressInitialValue"]
-A_PRESS_UPPER_LIMIT = config["APressUpperLimit"]
-SEEDS_TO_COLLECT = config["seedsToCollect"]
-REPEAT_TIMES = config["repeatTimes"]
-OUTPUT_FILE_NAME = config["outputFileName"]
+A_PRESS_INITIAL_VALUE = config["A_PRESS_INITIAL_VALUE"]
+A_PRESS_UPPER_LIMIT = config["A_PRESS_UPPER_LIMIT"]
+SEEDS_TO_COLLECT = config["SEEDS_TO_COLLECT"]
+REPEAT_TIMES = config["REPEAT_TIMES"]
+OUTPUT_FILE_NAME = config["OUTPUT_FILE_NAME"]
 
 
 def signal_handler(_signal, _advances):  # CTRL+C handler
