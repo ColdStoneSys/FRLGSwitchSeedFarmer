@@ -130,7 +130,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 if prior_one == 1:
                     base  = 0x1e00010000
                 else:
-                    base  = 0x3c00010000
+                    base  = 0x3c00000000
 
                 # There are a number of edge cases that would only happen extremely rarely if we read in the middle of the function that we test for
                 test_prior = base | prior_zero
@@ -186,7 +186,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     bot.pause(3)
     ok = False
     try:
-         ok = bot.read_is_box_pointer_initialized():
+         ok = bot.read_is_box_pointer_initialized()
     # TODO: actual exception types
     except Exception:
         print(
