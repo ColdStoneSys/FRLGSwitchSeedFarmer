@@ -48,7 +48,7 @@ for i in range(90):
 
     data_zero += 1
 
-    if data_zero > data_two:
+    if data_zero >= data_two:
         data_zero = 0
         data_one ^= 1
 
@@ -134,26 +134,26 @@ while (
                 # There are a number of edge cases that would only happen extremely rarely if we read in the middle of the function that we test for
                 test_prior = (prior_two << 32) | (prior_one << 16) | prior_zero
 
-                if prior_blink_data == test_prior:
+                if blink_data == test_prior:
                     continue
 
                 prior_zero += 1
                 test_prior = (prior_two << 32) | (prior_one << 16) | prior_zero
 
-                if prior_blink_data == test_prior:
+                if blink_data == test_prior:
                     continue
 
                 if prior_zero >= prior_two:
                     prior_zero = 0
                     test_prior = (prior_two << 32) | (prior_one << 16) | prior_zero
 
-                    if prior_blink_data == test_prior:
+                    if blink_data == test_prior:
                         continue
 
                     prior_one ^= 1
                     test_prior = (prior_two << 32) | (prior_one << 16) | prior_zero
 
-                    if prior_blink_data == test_prior:
+                    if blink_data == test_prior:
                         continue
 
                 # None of the test cases made sense, so we raise an error because we don't understand where we are in the cycle
