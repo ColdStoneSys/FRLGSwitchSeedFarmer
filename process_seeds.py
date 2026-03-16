@@ -1,5 +1,6 @@
 import csv, statistics, json
 from itertools import zip_longest
+from collections import Counter
 
 with open("config.json", "r", encoding="utf-8") as f:
     config = json.load(f)
