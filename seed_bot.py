@@ -6,61 +6,72 @@ GAMES = {
         "Game": "FireRed (JPN)",
         "VBlankCounter": 0xBD68B304,
         "CurrentSeedAddress": 0xBD68D230,
+        "BlinkStartValue": 0x807CB99 # to change
     },
     0x0100F1E0233FA000: {
         "Game": "LeafGreen (JPN)",
         "VBlankCounter": 0xBD68B304,
         "CurrentSeedAddress": 0xBD68D230,
+        "BlinkStartValue": 0x807CB99 # to change
     },
     0x0100554023408000: {
         "Game": "FireRed (ENG)",
         "VBlankCounter": 0xBD68B3A4,
         "CurrentSeedAddress": 0xBD68D2D0,
+        "CurrentSeedAddress": 0x0807CB65,
     },
     0x010034D02340E000: {
         "Game": "LeafGreen (ENG)",
         "VBlankCounter": 0xBD68B3A4,
-        "CurrentSeedAddress": 0xBD68D2D0,
+        "CurrentSeedAddress": 0x0807CB65,
     },
     0x01004B3023412000: {
         "Game": "FireRed (FRE)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
+        "BlinkStartValue": 0x807CB99 # to change
     },
     0x010087C02342E000: {
         "Game": "LeafGreen (FRE)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
+        "BlinkStartValue": 0x807CB99 # to change
     },
     0x010092302342A000: {
         "Game": "FireRed (ITA)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
+        "BlinkStartValue": 0x807CB99
     },
     0x01005C7023432000: {
         "Game": "LeafGreen (ITA)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
+        "BlinkStartValue": 0x807CB99
     },
     0x01007F8023416000: {
         "Game": "FireRed (GER)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
+        "BlinkStartValue": 0x807CB99 # to change
     },
     0x0100FD6023430000: {
         "Game": "LeafGreen (GER)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
+        "BlinkStartValue": 0x807CB99 # to change
     },
     0x0100EB702342C000: {
         "Game": "FireRed (SPA)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
+        "BlinkStartValue": 0x807CB99 # to change
     },
     0x01002B5023434000: {
         "Game": "LeafGreen (SPA)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
+        "BlinkStartValue": 0x807CB99 # to change
     },
 }
 
@@ -91,6 +102,7 @@ class SeedBot:
             self.game_name = game_info["Game"]
             self.current_seed_address = game_info["CurrentSeedAddress"]
             self.vblank_counter_address = game_info["VBlankCounter"]
+            self.blink_start_value = game_info["BlinkStartValue"]
             print(f"Game: {self.game_name}\n")
 
     def send_command(self, content):
@@ -189,11 +201,8 @@ class SeedBot:
     def read_is_blink_start_initialized(self):
         return (
             int.from_bytes(self.read(self.current_seed_address + 0xE0, 4), "little")
-            != 0
+            == self.blink_start_value
         )
 
     def read_blink_start_counter(self):
-        return (
-            int.from_bytes(self.read(self.current_seed_address + 0xE8, 16), "little")
-            != 0
-        )
+        return int.from_bytes(self.read(self.current_seed_address + 0xE8, 16), "little")
