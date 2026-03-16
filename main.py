@@ -112,6 +112,7 @@ while (
     prior_blink_data = 0
     try:
         while loop_counter < seed_delay:
+            bot.pause(0.001)
             blink_data = bot.read_blink_start_counter()
             index = loop_counter%90
             # Data matches the next expected value in the sequence
