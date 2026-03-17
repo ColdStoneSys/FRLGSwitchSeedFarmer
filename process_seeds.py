@@ -23,29 +23,35 @@ with open(RAW_FILE_NAME, mode="r", newline="", encoding="utf-8") as file:
 
 windows = {}
 compressed_frames = []
+
 for index in range(len(frames)):
     frame = frames[index]
+
     if frame not in windows:
         windows[frame] = []
         compressed_frames.append(frame)
+
     windows[frame].append(seeds[index])
 
 compressed_seeds = []
+
 for frame in windows:
     window = windows[frame]
     seed = Counter(window).most_common(1)[0][0]
     compressed_seeds.append(seed)
-    
 
 compressed_times = []
+
 for compressed_index, frame in enumerate(compressed_frames):
     t = 0
     c = 0
     target_seed = compressed_seeds[compressed_index]
+
     for uncompressed_index in range(len(frames)):
         if target_seed == seeds[uncompressed_index] and frames[uncompressed_index] == frame:
             t+=times[uncompressed_index]
             c+=1
+
     t/=c
     average = int(round(t/time_unit))
     compressed_times.append(average)
