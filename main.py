@@ -7,6 +7,13 @@ with open("config.json", "r", encoding="utf-8") as f:
 INITIAL_SEED_DELAY = config["A_PRESS_INITIAL_VALUE"]
 SEEDS_TO_COLLECT = config["SEEDS_TO_COLLECT"]
 REPEAT_MODE = config["REPEAT_MODE"]
+SEED_BUTTON = config["SEED_BUTTON"]
+if SEED_BUTTON not in ["A", "X", "L", "START", "PLUS"]:
+    raise ValueError(
+    f"{SEED_BUTTON} is not a valid seed button. Must be one of 'A', 'START', 'X', 'PLUS', or 'L'."
+    )
+if SEED_BUTTON == "START":
+    SEED_BUTTON = "X"
 
 if REPEAT_MODE == "FIXED":
     REPEAT_TIMES = config["REPEAT_TIMES"]
@@ -210,7 +217,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             continue
 
     # A press to trigger seed
-    bot.press("A")
+    bot.press(SEED_BUTTON)
     toc = time()
 
     # Stall until seed is initialized
