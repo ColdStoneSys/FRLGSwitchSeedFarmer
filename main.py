@@ -73,7 +73,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     tic = 0
     toc = 0
     bot.pause(1)
-    
+
     try:
         vblank_counter = bot.read_vblank_counter()
 
@@ -102,7 +102,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
     # Stall until the BlinkPressStart task has been initialized
     bot.pause(24)
-    
+
     if seed_delay == 0:
         try:
             first_task_data = bot.read_first_task_data()
@@ -112,7 +112,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 if DEBUG:
                     print(hex(first_task_data))
                 first_task_data = bot.read_first_task_data()
-                
+
         except Exception:
             print(
                 "Error reading RAM for title screen scene, restarting the game and resetting the connection in 15 seconds"
@@ -122,7 +122,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             reset_time = time()
             consecutive_failures += 1
             continue
-        
+
     else:
         try:
             while not bot.read_is_blink_start_initialized():
@@ -221,7 +221,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 ok = False
                 break
                 bot.pause(0.2)
-        
+
     # TODO: actual exception types
     except Exception:
         print(
@@ -279,7 +279,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
     consecutive_failures = 0
     bot.restart_game()
-    
+
     if EMUNAND:
         bot.pause(1.6)
 
