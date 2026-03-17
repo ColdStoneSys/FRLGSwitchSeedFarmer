@@ -257,6 +257,8 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
     consecutive_failures = 0
     bot.restart_game()
+
     if EMUNAND:
         bot.pause(1.6)
+
     reset_time = time()
