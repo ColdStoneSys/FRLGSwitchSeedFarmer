@@ -9,6 +9,7 @@
     "PROCESSED_FILE_NAME": "Processed Sysbot Seeds.csv",
 	"PROCESSED_TIME_UNIT": 16,
     "USB": false,
+    "USB_INDEX": 1,
     "EMUNAND": false,
     "DEBUG": false
 }

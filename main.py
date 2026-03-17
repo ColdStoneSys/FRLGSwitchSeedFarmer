@@ -29,7 +29,7 @@ USB = config["USB"]
 DEBUG = config["DEBUG"]
 EMUNAND = config["EMUNAND"]
 
-bot = SeedBotUSB() if USB else SeedBot(config["IP"])
+bot = SeedBotUSB(config["USB_INDEX"]) if USB else SeedBot(config["IP"])
 
 def signal_handler(_signal, _advances):  # CTRL+C handler
     print("Stop request")
