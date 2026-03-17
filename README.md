@@ -38,6 +38,7 @@ Enable or disable debug printing.
 
 ## Credits:
 * [olliz0r](https://github.com/olliz0r) for [sys-botbase](https://github.com/olliz0r/sys-botbase)
+* [Koi-3088](https://github.com/Koi-3088) for [sys-botbase-cpp](https://github.com/PokemonAutomation/sys-botbase-cpp)
 * [wwwwwwzx](https://github.com/wwwwwwzx) for [PyNXBot](https://github.com/wwwwwwzx/PyNXBot)
 * [kwsch](https://github.com/kwsch) for [SysBot.NET](https://github.com/kwsch/SysBot.NET)
 * [Lusamine](https://github.com/Lusamine) for [SySBot.NET fork](https://github.com/Lusamine/SysBot.NET/tree/moarencounterbots)
