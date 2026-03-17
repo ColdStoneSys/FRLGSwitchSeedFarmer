@@ -72,7 +72,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     tic = 0
     toc = 0
     bot.pause(1)
-
+    
     try:
         vblank_counter = bot.read_vblank_counter()
 
@@ -192,11 +192,14 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     toc = time()
 
     # Stall until seed is initialized
-    bot.pause(4 if EMUNAND else 2.25)
-    ok = False
-
+    ok = True
     try:
-        ok = bot.read_is_box_pointer_initialized()
+        while not bot.read_is_box_pointer_initialized():
+            if time() - toc > 5:
+                ok = False
+                break
+                bot.pause(0.2)
+        
     # TODO: actual exception types
     except Exception:
         print(
@@ -212,8 +215,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     if not ok:
         print("Failed to press A at the cutscene")
         consecutive_failures += 1
-        bot.restart_game()
-        bot.pause(1)
+        bot.restart_game(True)
         reset_time = time()
         continue
 
@@ -254,9 +256,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             current_seeds = []
 
     consecutive_failures = 0
-    if EMUNAND:
-        bot.pause(1)
     bot.restart_game()
     if EMUNAND:
-        bot.pause(1.5)
+        bot.pause(1.6)
     reset_time = time()
