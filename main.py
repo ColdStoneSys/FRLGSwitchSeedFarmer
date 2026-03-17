@@ -22,7 +22,6 @@ else:
 OUTPUT_FILE_NAME = config["OUTPUT_FILE_NAME"]
 DEBUG = config["DEBUG"]
 
-
 def signal_handler(_signal, _advances):  # CTRL+C handler
     print("Stop request")
     bot.close()
@@ -97,7 +96,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
     # Stall until the BlinkPressStart task has been initialized
     bot.pause(23)
- 
+
     try:
         while not bot.read_is_blink_start_initialized():
             bot.pause(0.001)
@@ -149,16 +148,17 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
                 if blink_data == test_prior:
                     prior_blink_data = blink_start_good_values[index]
-                    loop_counter+=1
+                    loop_counter += 1
                     continue
 
                 prior_two = base >> 32
+
                 if prior_zero >= prior_two:
-                    test_prior = base 
+                    test_prior = base
 
                     if blink_data == test_prior:
                         prior_blink_data = blink_start_good_values[index]
-                        loop_counter+=1
+                        loop_counter += 1
                         continue
 
                 # None of the test cases made sense, so we raise an error because we don't understand where we are in the cycle
@@ -245,7 +245,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         if len(current_seeds) == 0 or len(current_seeds) == 1 and current_seeds[0] != initial_seed:
             current_seeds.append(initial_seed)
         else:
-            seed_delay+=1
+            seed_delay += 1
             current_seeds = []
 
     consecutive_failures = 0
