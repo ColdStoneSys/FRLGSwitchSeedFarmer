@@ -210,6 +210,12 @@ class SeedBot:
 
     def read_blink_start_counter(self):
         return int.from_bytes(self.read(self.current_seed_address + 0xE8, 16), "little")
+        
+    def is_title_screen_scene_run(self):
+        return (
+            int.from_bytes(self.read(self.current_seed_address + 0xA0, 4), "little")
+            == 3
+        )
 
 class SeedBotUSB:
     def __init__(self):
@@ -380,3 +386,9 @@ class SeedBotUSB:
 
     def read_blink_start_counter(self):
         return int.from_bytes(self.read(self.current_seed_address + 0xE8, 16), "little")
+        
+    def is_title_screen_scene_run(self):
+        return (
+            int.from_bytes(self.read(self.current_seed_address + 0xA0, 4), "little")
+            == 3
+        )
