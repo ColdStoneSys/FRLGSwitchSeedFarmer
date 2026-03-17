@@ -320,8 +320,6 @@ class SeedBotUSB:
     # peek <address in hex, prefaced by 0x> <amount of bytes, dec or hex with 0x>
     def read(self, address, size):
         self.send_command(f"peek 0x{address:X} 0x{size:X}")
-        # TODO: sensible reading and not an arbitrary wait
-        #sleep(size / 0x8000)
 
         return self.read_usb()
 
