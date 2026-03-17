@@ -101,92 +101,107 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         continue
 
     # Stall until the BlinkPressStart task has been initialized
-    bot.pause(23)
+    bot.pause(24)
+    
+    if seed_delay == 0:
+        try:
+            while not bot.is_title_screen_scene_run():
+                bot.pause(0.001)
+        except Exception:
+            print(
+                "Error reading RAM for title screen scene, restarting the game and resetting the connection in 15 seconds"
+            )
+            bot.pause(15)
+            bot.restart_game(True)
+            reset_time = time()
+            consecutive_failures += 1
+            continue
+        
+    else:
+        try:
+            while not bot.read_is_blink_start_initialized():
+                bot.pause(0.001)
+        # TODO: actual exception types
+        except Exception:
+            print(
+                "Error reading RAM for blink start task, restarting the game and resetting the connection in 15 seconds"
+            )
+            bot.pause(15)
+            bot.restart_game(True)
+            reset_time = time()
+            consecutive_failures += 1
+            continue
 
-    try:
-        while not bot.read_is_blink_start_initialized():
-            bot.pause(0.001)
-    # TODO: actual exception types
-    except Exception:
-        print(
-            "Error reading RAM for blink start task, restarting the game and resetting the connection in 15 seconds"
-        )
-        bot.pause(15)
-        bot.restart_game(True)
-        reset_time = time()
-        consecutive_failures += 1
-        continue
+        # Stall until the right number of main game loops have occured
+        try:
+            while loop_counter < seed_delay - 1:
+                bot.pause(0.001)
+                blink_data = bot.read_blink_start_counter()
+                index = loop_counter % 90
 
-    # Stall until the right number of main game loops have occured
-    try:
-        while loop_counter < seed_delay:
-            bot.pause(0.001)
-            blink_data = bot.read_blink_start_counter()
-            index = loop_counter % 90
-
-            # Data matches the next expected value in the sequence
-            if blink_data == blink_start_good_values[index]:
-                loop_counter += 1
-                prior_blink_data = blink_data
-            else:
-                # Data is same as old data
-                if blink_data == prior_blink_data:
-                    continue
-
-                prior_zero = prior_blink_data & 0xFFFF
-                prior_one = (prior_blink_data >> 16) & 0xFFFF
-
-                if prior_one == 1:
-                    base = 0x1e00010000
-                else:
-                    base = 0x3c00000000
-
-                # There are a number of edge cases that would only happen extremely rarely if we read in the middle of the function that we test for
-                test_prior = base | prior_zero
-
-                if blink_data == test_prior:
-                    prior_blink_data = blink_start_good_values[index]
-                    loop_counter+=1
-                    continue
-
-                prior_zero += 1
-                test_prior = base | prior_zero
-
-                if blink_data == test_prior:
-                    prior_blink_data = blink_start_good_values[index]
+                # Data matches the next expected value in the sequence
+                if blink_data == blink_start_good_values[index]:
                     loop_counter += 1
-                    continue
+                    prior_blink_data = blink_data
+                else:
+                    # Data is same as old data
+                    if blink_data == prior_blink_data:
+                        continue
 
-                prior_two = base >> 32
+                    prior_zero = prior_blink_data & 0xFFFF
+                    prior_one = (prior_blink_data >> 16) & 0xFFFF
 
-                if prior_zero >= prior_two:
-                    test_prior = base
+                    if prior_one == 1:
+                        base = 0x1e00010000
+                    else:
+                        base = 0x3c00000000
+
+                    # There are a number of edge cases that would only happen extremely rarely if we read in the middle of the function that we test for
+                    test_prior = base | prior_zero
+
+                    if blink_data == test_prior:
+                        prior_blink_data = blink_start_good_values[index]
+                        loop_counter+=1
+                        continue
+
+                    prior_zero += 1
+                    test_prior = base | prior_zero
 
                     if blink_data == test_prior:
                         prior_blink_data = blink_start_good_values[index]
                         loop_counter += 1
                         continue
 
-                # None of the test cases made sense, so we raise an error because we don't understand where we are in the cycle
-                raise ValueError(
-                    f"New data {blink_data} not consistent with old data {prior_blink_data}"
-                )
-    except ValueError as e:
-        print(e)
-        bot.pause(15)
-        bot.restart_game(True)
-        reset_time = time()
-        consecutive_failures += 1
-        continue
-    except Exception as e:
-        print(
-            "Error reading RAM for blink start state, restarting the game and resetting the connection in 15 seconds"
-        )
-        bot.pause(15)
-        bot.restart_game(True)
-        reset_time = time()
-        consecutive_failures += 1
-        continue
+                    prior_two = base >> 32
+
+                    if prior_zero >= prior_two:
+                        test_prior = base
+
+                        if blink_data == test_prior:
+                            prior_blink_data = blink_start_good_values[index]
+                            loop_counter += 1
+                            continue
+
+                    # None of the test cases made sense, so we raise an error because we don't understand where we are in the cycle
+                    raise ValueError(
+                        f"New data {blink_data} not consistent with old data {prior_blink_data}"
+                    )
+        except ValueError as e:
+            print(e)
+            bot.pause(15)
+            bot.restart_game(True)
+            reset_time = time()
+            consecutive_failures += 1
+            continue
+        except Exception as e:
+            print(
+                "Error reading RAM for blink start state, restarting the game and resetting the connection in 15 seconds"
+            )
+            bot.pause(15)
+            bot.restart_game(True)
+            reset_time = time()
+            consecutive_failures += 1
+            continue
 
     # A press to trigger seed
     bot.press("A")
