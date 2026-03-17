@@ -220,7 +220,6 @@ class SeedBot:
     def read_first_task_data(self):
         return int.from_bytes(self.read(self.current_seed_address + 0x98, 4), "little")
 
-
 class SeedBotUSB:
     def __init__(self):
         self.connect()
