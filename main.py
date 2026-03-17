@@ -106,11 +106,13 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     if seed_delay == 0:
         try:
             first_task_data = bot.read_first_task_data()
-            if DEBUG:
-                print(hex(first_task_data))
+
             while first_task_data != 3:
                 bot.pause(0.001)
+                if DEBUG:
+                    print(hex(first_task_data))
                 first_task_data = bot.read_first_task_data()
+                
         except Exception:
             print(
                 "Error reading RAM for title screen scene, restarting the game and resetting the connection in 15 seconds"

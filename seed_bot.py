@@ -216,6 +216,10 @@ class SeedBot:
             int.from_bytes(self.read(self.current_seed_address + 0xA0, 4), "little")
             == 3
         )
+        
+    def read_first_task_data(self):
+        return int.from_bytes(self.read(self.current_seed_address + 0xA0, 4), "little")
+
 
 class SeedBotUSB:
     def __init__(self):
@@ -392,3 +396,6 @@ class SeedBotUSB:
             int.from_bytes(self.read(self.current_seed_address + 0xA0, 4), "little")
             == 3
         )
+        
+    def read_first_task_data(self):
+        return int.from_bytes(self.read(self.current_seed_address + 0xA0, 4), "little")
