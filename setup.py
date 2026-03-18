@@ -15,5 +15,5 @@ setup(
     version="1.0",
     description="",
     executables=executables,
-    options={"build_exe": {"packages": get_requirements(), "build_exe": "dist", "include_files": ["config.json"]}},
+    options={"build_exe": {"packages": ["usb"], "build_exe": "dist", "include_files": ["config.json"]}},
 )
