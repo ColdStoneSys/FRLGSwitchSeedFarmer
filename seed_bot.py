@@ -1,5 +1,5 @@
 import usb
-import sys, socket, binascii, usb.core, usb.util
+import sys, socket, binascii
 from time import sleep
 
 GAMES = {
