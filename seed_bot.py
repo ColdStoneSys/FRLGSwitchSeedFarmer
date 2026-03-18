@@ -6,13 +6,13 @@ GAMES = {
         "Game": "FireRed (JPN)",
         "VBlankCounter": 0xBD68B304,
         "CurrentSeedAddress": 0xBD68D230,
-        "BlinkStartValue": 0x807CB99 # to change
+        "BlinkStartValue": 0x807c3a1
     },
     0x100F1E0233FA000: {
         "Game": "LeafGreen (JPN)",
         "VBlankCounter": 0xBD68B304,
         "CurrentSeedAddress": 0xBD68D230,
-        "BlinkStartValue": 0x807CB99 # to change
+        "BlinkStartValue": 0x807c3a1
     },
     0x100554023408000: {
         "Game": "FireRed (ENG)",
@@ -30,13 +30,13 @@ GAMES = {
         "Game": "FireRed (FRE)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
-        "BlinkStartValue": 0x807CB99 # to change
+        "BlinkStartValue": 0x807cc6d
     },
     0x10087C02342E000: {
         "Game": "LeafGreen (FRE)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
-        "BlinkStartValue": 0x807CB99 # to change
+        "BlinkStartValue": 0x807cc6d
     },
     0x10092302342A000: {
         "Game": "FireRed (ITA)",
@@ -54,25 +54,25 @@ GAMES = {
         "Game": "FireRed (GER)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
-        "BlinkStartValue": 0x807CB99 # to change
+        "BlinkStartValue": 0x807cbad
     },
     0x100FD6023430000: {
         "Game": "LeafGreen (GER)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
-        "BlinkStartValue": 0x807CB99 # to change
+        "BlinkStartValue": 0x807cbad
     },
     0x100EB702342C000: {
         "Game": "FireRed (SPA)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
-        "BlinkStartValue": 0x807CB99 # to change
+        "BlinkStartValue": 0x807cc81
     },
     0x1002B5023434000: {
         "Game": "LeafGreen (SPA)",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
-        "BlinkStartValue": 0x807CB99 # to change
+        "BlinkStartValue": 0x807cc81
     },
 }
 
