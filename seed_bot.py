@@ -1,3 +1,4 @@
+import usb
 import sys, socket, binascii, usb.core, usb.util
 from time import sleep
 
