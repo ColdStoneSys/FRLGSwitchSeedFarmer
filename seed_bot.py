@@ -97,7 +97,7 @@ class SeedBot:
 
         if title_id == 0:
             print("Game not running, starting it and resetting the connection")
-            self.restart_game(True, quit_game=False)
+            self.restart_game(should_reconnect=True, quit_game=False)
         elif title_id not in GAMES:
             print(f"Unsupported title: {title_id:016X}")
             self.close()
@@ -276,7 +276,7 @@ class SeedBotUSB:
 
         if title_id == 0:
             print("Game not running, starting it and resetting the connection")
-            self.restart_game(True, quit_game=False)
+            self.restart_game(should_reconnect=True, quit_game=False)
         elif title_id not in GAMES:
             print(f"Unsupported title: {title_id:016X}")
             self.close()

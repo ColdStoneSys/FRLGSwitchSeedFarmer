@@ -107,7 +107,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             "Error reading RAM for vblank, restarting the game and resetting the connection in 15 seconds"
         )
         bot.pause(15)
-        bot.restart_game(True, release=SEED_BUTTON)
+        bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
         reset_time = time()
         consecutive_failures += 1
         continue
@@ -133,7 +133,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         except TimeoutError as e:
             print(e)
             bot.pause(15)
-            bot.restart_game(True, release=SEED_BUTTON)
+            bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
             reset_time = time()
             consecutive_failures += 1
             continue           
@@ -142,7 +142,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 "Error reading RAM for title screen scene, restarting the game and resetting the connection in 15 seconds"
             )
             bot.pause(15)
-            bot.restart_game(True, release=SEED_BUTTON)
+            bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
             reset_time = time()
             consecutive_failures += 1
             continue
@@ -167,7 +167,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         except TimeoutError as e:
             print(e)
             bot.pause(15)
-            bot.restart_game(True, release=SEED_BUTTON)
+            bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
             reset_time = time()
             consecutive_failures += 1
             continue  
@@ -176,7 +176,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 "Error reading RAM for blink start task, restarting the game and resetting the connection in 15 seconds"
             )
             bot.pause(15)
-            bot.restart_game(True, release=SEED_BUTTON)
+            bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
             reset_time = time()
             consecutive_failures += 1
             continue
@@ -238,7 +238,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         except ValueError as e:
             print(e)
             bot.pause(15)
-            bot.restart_game(True, release=SEED_BUTTON)
+            bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
             reset_time = time()
             consecutive_failures += 1
             continue
@@ -247,7 +247,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 "Error reading RAM for blink start state, restarting the game and resetting the connection in 15 seconds"
             )
             bot.pause(15)
-            bot.restart_game(True, release=SEED_BUTTON)
+            bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
             reset_time = time()
             consecutive_failures += 1
             continue
@@ -271,7 +271,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             "Error reading RAM for box pointer, restarting the game and resetting the connection in 15 seconds"
         )
         bot.pause(15)
-        bot.restart_game(True, release=SEED_BUTTON)
+        bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
         reset_time = time()
         consecutive_failures += 1
         continue
@@ -280,7 +280,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     if not ok:
         print("Failed to press A at the cutscene")
         consecutive_failures += 1
-        bot.restart_game(True, release=SEED_BUTTON)
+        bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
         reset_time = time()
         continue
 
@@ -293,7 +293,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             "Error reading RAM for seed, restarting the game and resetting the connection in 15 seconds"
         )
         bot.pause(15)
-        bot.restart_game(True, release=SEED_BUTTON)
+        bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
         reset_time = time()
         consecutive_failures += 1
         continue
