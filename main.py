@@ -271,7 +271,6 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             if time() - toc > 5:
                 ok = False
                 break
-                bot.pause(0.2)
 
     # TODO: actual exception types
     except Exception:
