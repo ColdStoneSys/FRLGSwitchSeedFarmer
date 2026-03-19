@@ -24,19 +24,16 @@ with open(RAW_FILE_NAME, mode="r", newline="", encoding="utf-8") as file:
 windows = {}
 compressed_frames = []
 
-for index in range(len(frames)):
-    frame = frames[index]
-
+for frame, seed in zip(frames, seeds):
     if frame not in windows:
         windows[frame] = []
         compressed_frames.append(frame)
 
-    windows[frame].append(seeds[index])
+    windows[frame].append(seed)
 
 compressed_seeds = []
 
-for frame in windows:
-    window = windows[frame]
+for window in windows.values():
     seed = Counter(window).most_common(1)[0][0]
     compressed_seeds.append(seed)
 
@@ -47,12 +44,11 @@ for compressed_index, frame in enumerate(compressed_frames):
     c = 0
     target_seed = compressed_seeds[compressed_index]
 
-    for uncompressed_index in range(len(frames)):
-        if (
-            target_seed == seeds[uncompressed_index]
-            and frames[uncompressed_index] == frame
-        ):
-            t += times[uncompressed_index]
+    for uncompressed_seed, uncompressed_frame, uncompressed_time in zip(
+        seeds, frames, times
+    ):
+        if (target_seed, frame) == (uncompressed_seed, uncompressed_frame):
+            t += uncompressed_time
             c += 1
 
     t /= c
