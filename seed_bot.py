@@ -78,12 +78,13 @@ GAMES = {
 }
 
 class SeedBot:
-    def __init__(self, ip):
+    def __init__(self, ip, skip_profile):
+        self.ip = ip
+        self.skip_profile = skip_profile
         self.connect(ip)
         self.detect_game()
 
     def connect(self, ip):
-        self.ip = ip
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.settimeout(1)
         self.s.connect((self.ip, 6000))
@@ -93,6 +94,7 @@ class SeedBot:
 
     def detect_game(self):
         title_id = self.get_title_id()
+
         if title_id == 0:
             print("Game not running, starting it and resetting the connection")
             self.restart_game(True)
@@ -172,10 +174,12 @@ class SeedBot:
         self.click("A")
         self.pause(0.2)
         self.click("A")
-        self.pause(1.3)
-        self.click("A")
-        self.pause(0.2)
-        self.click("A")
+
+        if self.skip_profile:
+            self.pause(1.3)
+            self.click("A")
+            self.pause(0.2)
+            self.click("A")
 
     def restart_game(self, should_reconnect=False, release="A"):
         self.release(release)
@@ -225,8 +229,9 @@ class SeedBot:
         return int.from_bytes(self.read(self.current_seed_address + 0x98, 4), "little")
 
 class SeedBotUSB:
-    def __init__(self, index):
+    def __init__(self, index, skip_profile):
         self.index = index
+        self.skip_profile = skip_profile
         self.connect(self.index)
         self.detect_game()
 
@@ -356,10 +361,12 @@ class SeedBotUSB:
         self.click("A")
         self.pause(0.2)
         self.click("A")
-        self.pause(1.3)
-        self.click("A")
-        self.pause(0.2)
-        self.click("A")
+
+        if self.skip_profile:
+            self.pause(1.3)
+            self.click("A")
+            self.pause(0.2)
+            self.click("A")
 
     def restart_game(self, should_reconnect=False, release="A"):
         self.release(release)

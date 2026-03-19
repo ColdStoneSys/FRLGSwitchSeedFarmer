@@ -11,5 +11,6 @@
     "USB": false,
     "USB_INDEX": 1,
     "EMUNAND": false,
+    "SKIP_PROFILE": false,
     "DEBUG": false
 }
