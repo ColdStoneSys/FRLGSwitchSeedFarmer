@@ -1,4 +1,4 @@
-import csv, statistics, json
+import csv, json
 from itertools import zip_longest
 from collections import Counter
 
