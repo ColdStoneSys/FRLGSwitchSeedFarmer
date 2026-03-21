@@ -1,5 +1,5 @@
 import signal, json, csv, os
-from time import time
+from time import perf_counter
 from seed_bot import SeedBot, SeedBotUSB
 
 with open("config.json", "r", encoding="utf-8") as f:
@@ -99,7 +99,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         vblank_timeout -= 1.5
     
     bot.restart_game(should_reconnect = reconnect, release=SEED_BUTTON)
-    reset_time = time()
+    reset_time = perf_counter()
     bot.pause(first_read_delay)
 
     try:
@@ -108,7 +108,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             print(f"VBlank: {vblank_counter}")
 
         while vblank_counter != LOW_VBLANK_HERALDING:
-            if time() - reset_time > vblank_timeout:
+            if perf_counter() - reset_time > vblank_timeout:
                 print(f"Failed to latch herald vblank value of {LOW_VBLANK_HERALDING}.")
                 raise TimeoutError
 
@@ -118,7 +118,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             if DEBUG:
                 print(f"VBlank: {vblank_counter}")
 
-        tic = time()
+        tic = perf_counter()
     # TODO: actual exception types
     except Exception:
         print(
@@ -137,7 +137,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             first_task_data = bot.read_first_task_data()
 
             while first_task_data != 3:
-                if time() - tic > 25:
+                if perf_counter() - tic > 25:
                     raise TimeoutError(
                         "Timed out waiting to detect last scene of Fadein"
                     )
@@ -172,7 +172,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 print(f"Task two function is {hex(task_two_pointer)}")
 
             while task_two_pointer != bot.blink_start_value:
-                if time() - tic > 25:
+                if perf_counter() - tic > 25:
                     raise TimeoutError("Timed out waiting to detect BLINK_START task")
 
                 bot.pause(0.001)
@@ -266,14 +266,14 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
     # A press to trigger seed
     bot.press(SEED_BUTTON)
-    toc = time()
+    toc = perf_counter()
     bot.pause(2.05)
 
     # Stall until seed is initialized
     ok = True
     try:
         while not bot.read_is_box_pointer_initialized():
-            if time() - toc > 3:
+            if perf_counter() - toc > 3:
                 ok = False
                 break
 
@@ -294,7 +294,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         print("Failed to press A at the cutscene")
         consecutive_failures += 1
         bot.restart_game(should_reconnect=True, release=SEED_BUTTON)
-        reset_time = time()
+        reset_time = perf_counter()
         continue
 
     # Collect data
