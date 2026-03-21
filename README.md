@@ -13,7 +13,7 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 The IP address of your console (`System Settings` > `Internet` > `IP address`). Used only if `USB` setting is set to `false`.
 
 ### FIRST_SEED_TO_COLLECT
-Used to specify where in a column to start farming seeds. A value of 0 will begin at the start of a column. A full column is ~2300-2400 seeds.
+Used to specify where in a column to start farming seeds. A value of 0 will begin at the start of a column. A full column is should work out to <2450 seeds.
 
 ### SEEDS_TO_COLLECT
 Bot will run until this many seeds have been collected or it detects the title screen has looped. This number includes seed duplicates due to repeating the same frame. The recommended value with "AUTO" mode is 5500 for a full column run.
@@ -41,9 +41,6 @@ Set this to `true` if you want to run the bot through USB ports (best option if 
 
 ### USB_INDEX
 Index of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`
-
-### EMUNAND
-Set this to `true` only if you are on EmuNand. This will handle slow games booting/closing timing.
 
 ### SKIP_PROFILE
 Set this to `true` when you have the option `Skip Selection Screen` (`Settings` > `Users`) turned on. The option appears only when your Switch has just one profile. This will avoid some unnecessary A presses.

@@ -88,10 +88,19 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     prior_blink_data = 0
     tic = 0
     toc = 0
+    # Boot time measurement statistics never had a value outside range of 2.5 to 3.1 seconds
+    # shift those endpoints by 100ms and round the ms per frame down/up accordingly for safety 
+    # vblankCounter is reset to zero approximately 16 frames post boot by the bootup process.
+    first_read_delay = 2.4 + (LOW_VBLANK_HERALDING + 16) * 0.016 
+    vblank_timeout = 3.2 + (LOW_VBLANK_HERALDING + 16) * 0.017
+    
+    if reconnect:
+        first_read_delay -= 1.5
+        vblank_timeout -= 1.5
+    
     bot.restart_game(should_reconnect = reconnect, release=SEED_BUTTON)
     reset_time = time()
-    
-    bot.pause(6.5)   # minimum reasonable boot delay is 2.4 seconds and 2.4 seconds + 256 frames ~ 6.68 seconds
+    bot.pause(first_read_delay)
 
     try:
         vblank_counter = bot.read_vblank_counter()
@@ -99,8 +108,8 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             print(f"VBlank: {vblank_counter}")
 
         while vblank_counter != LOW_VBLANK_HERALDING:
-            if time() - reset_time > 10:
-                print("Failed to boot")
+            if time() - reset_time > vblank_timeout:
+                print(f"Failed to latch herald vblank value of {LOW_VBLANK_HERALDING}.")
                 raise TimeoutError
 
             bot.pause(0.002)
