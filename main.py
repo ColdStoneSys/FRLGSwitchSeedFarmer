@@ -114,7 +114,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     bot.pause(first_read_delay)
 
     if DEBUG:
-        print(f"Reading Vblank counter until heralded value appears")
+        print("Reading VBlank counter until heralded value appears")
 
     try:
         vblank_counter = bot.read_vblank_counter()
@@ -145,14 +145,14 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         continue
 
     if DEBUG:
-        print(f"Heralded value was found, pausing for 24 seconds")
+        print("Heralded value was found, pausing for 24 seconds")
 
     # Stall until the BlinkPressStart task has been initialized
     bot.pause(24)
 
     if seed_delay == 0:
         if DEBUG:
-            print(f"Attempting to detect title screen scene run")
+            print("Attempting to detect title screen scene run")
 
         try:
             first_task_data = bot.read_first_task_data()
@@ -185,7 +185,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             continue
     else:
         if DEBUG:
-            print(f"Attempting to detect BLINK_START task")
+            print("Attempting to detect BLINK_START task")
 
         try:
             task_two_pointer = bot.read_task_two_pointer()
@@ -220,7 +220,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
         if DEBUG:
             print(
-                f"Following chain of BLINK_START counters to delay press appropriately"
+                "Following chain of BLINK_START counters to delay press appropriately"
             )
 
         # Stall until the right number of main game loops have occured
@@ -296,14 +296,14 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     toc = perf_counter()
 
     if DEBUG:
-        print(f"PRESSED A to get seed, pausing for 2.05 seconds to wait for latch")
+        print("PRESSED A to get seed, pausing for 2.05 seconds to wait for latch")
 
     this_time = toc - tic
     bot.pause(2.05)
 
     if DEBUG:
         print(
-            f"Attempting to detect box pointer initialization to know seed read is safe"
+            "Attempting to detect box pointer initialization to know seed read is safe"
         )
 
     # Stall until seed is initialized
@@ -334,7 +334,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         continue
 
     if DEBUG:
-        print(f"Reading Seed")
+        print("Reading Seed")
 
     # Collect data
     try:
@@ -368,7 +368,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     else:
         # "AUTO" mode checks for apparent timing discrepencies, will only commit entries once a unique mode emerges
         if prior_time and (this_time - prior_time > 0.05 or this_time < prior_time):
-            print(f"Apparent discrepency. Discarding last measurement")
+            print("Apparent discrepency. Discarding last measurement")
         else:
             current_seeds.append(initial_seed)
             current_times.append(this_time)
