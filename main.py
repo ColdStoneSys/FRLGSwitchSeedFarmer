@@ -219,7 +219,9 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             continue
 
         if DEBUG:
-            print(f"Following chain of BLINK_START counters to delay press appropriately")
+            print(
+                f"Following chain of BLINK_START counters to delay press appropriately"
+            )
 
         # Stall until the right number of main game loops have occured
         try:
@@ -296,11 +298,13 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     if DEBUG:
         print(f"PRESSED A to get seed, pausing for 2.05 seconds to wait for latch")
 
-    this_time = toc-tic
+    this_time = toc - tic
     bot.pause(2.05)
 
     if DEBUG:
-        print(f"Attempting to detect box pointer initialization to know seed read is safe")
+        print(
+            f"Attempting to detect box pointer initialization to know seed read is safe"
+        )
 
     # Stall until seed is initialized
     ok = True
@@ -363,7 +367,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             seed_delay += 1
     else:
         # "AUTO" mode checks for apparent timing discrepencies, will only commit entries once a unique mode emerges
-        if prior_time and ( this_time - prior_time > 0.05 or this_time < prior_time ):
+        if prior_time and (this_time - prior_time > 0.05 or this_time < prior_time):
             print(f"Apparent discrepency. Discarding last measurement")
         else:
             current_seeds.append(initial_seed)
@@ -371,11 +375,12 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             counts = Counter(current_seeds)
             two_most_frequent = counts.most_common(2)
 
-            if (
-                two_most_frequent[0][1] > 1                              # Most common seed has appeared multiple times
-                and ( len(two_most_frequent) == 1                        # Most common seed is only seed
-                or    two_most_frequent[0][1] > two_most_frequent[1][1]) # Multiple seeds, but unique mode
-                ):
+            if two_most_frequent[0][
+                1
+            ] > 1 and (  # Most common seed has appeared multiple times
+                len(two_most_frequent) == 1  # Most common seed is only seed
+                or two_most_frequent[0][1] > two_most_frequent[1][1]
+            ):  # Multiple seeds, but unique mode
                 most_frequent_seed = two_most_frequent[0][0]
                 t = 0
 
@@ -384,11 +389,13 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
                     for seed_entry, time_entry in zip(current_seeds, current_times):
                         if seed_entry == most_frequent_seed:
-                            writer.writerow([f"{seed_entry:04X}", seed_delay, time_entry])
+                            writer.writerow(
+                                [f"{seed_entry:04X}", seed_delay, time_entry]
+                            )
                             t += time_entry
 
                 prior_time = t / two_most_frequent[0][1]
-                seed_delay +=1
+                seed_delay += 1
                 current_seeds = []
                 current_times = []
 

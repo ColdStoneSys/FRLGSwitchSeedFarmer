@@ -49,7 +49,7 @@ while loop_counter < 10 and consecutive_failures < 5:
         first_read_delay -= 1.5
         vblank_timeout -= 1.5
 
-    bot.restart_game(should_reconnect = reconnect, release=SEED_BUTTON)
+    bot.restart_game(should_reconnect=reconnect, release=SEED_BUTTON)
     reset_time = perf_counter()
     if DEBUG:
         print(f"Finished resetting, pausing for {first_read_delay} seconds")
@@ -86,5 +86,7 @@ while loop_counter < 10 and consecutive_failures < 5:
 
     this_time = tic - reset_time
     reset_times.append(this_time)
-    print(f"Measured a time of {this_time}. Running average is {sum(reset_times)/len(reset_times)}")
+    print(
+        f"Measured a time of {this_time}. Running average is {sum(reset_times)/len(reset_times)}"
+    )
     loop_counter += 1
