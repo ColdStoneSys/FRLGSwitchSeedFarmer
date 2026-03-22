@@ -58,7 +58,7 @@ if not os.path.exists(OUTPUT_FILE_NAME):
         writer = csv.writer(file)
         writer.writerow(["Seed", "Frame", "Time"])
 
-if DEBUG:
+if DEBUG and USB:
     bot.send_command("configure enableLogs 1")
 
 blink_start_good_values = [0 for _ in range(90)]
