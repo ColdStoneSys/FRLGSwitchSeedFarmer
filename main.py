@@ -354,8 +354,9 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             two_most_frequent = counts.most_common(2)
 
             if (  
-                (len(two_most_frequent) == 1 and two_most_frequent[0][1] > 1) # unique seed that has appeared more than once
-                or (two_most_frequent[0][1] > two_most_frequent[1][1]) # not unique seed, but there is a unique mode
+                len(two_most_frequent) == 1
+                and (two_most_frequent[0][1] > 1                           # unique seed that has appeared more than once
+                or   two_most_frequent[0][1] > two_most_frequent[1][1])     # not unique seed, but there is a unique mode
                 ):            
                 most_frequent_seed = two_most_frequent[0][0]
                 t = 0
