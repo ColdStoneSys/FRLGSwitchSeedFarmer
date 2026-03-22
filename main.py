@@ -58,6 +58,9 @@ if not os.path.exists(OUTPUT_FILE_NAME):
         writer = csv.writer(file)
         writer.writerow(["Seed", "Frame", "Time"])
 
+if DEBUG:
+    bot.send_command("configure enableLogs 1")
+
 blink_start_good_values = [0 for _ in range(90)]
 data_zero = 0
 data_one = 0
@@ -83,6 +86,7 @@ current_seeds = []
 current_times = []
 prior_time = None
 reconnect = False
+bot.press("A")
 bot.pause(5)
 
 while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
@@ -101,15 +105,17 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         first_read_delay -= 1.5
         vblank_timeout -= 1.5
 
-    bot.restart_game(should_reconnect = reconnect, release=SEED_BUTTON)
+    bot.restart_game(should_reconnect=reconnect, release=SEED_BUTTON)
     reset_time = perf_counter()
 
     if DEBUG:
         print(f"Finished resetting, pausing for {first_read_delay} seconds")
+
     bot.pause(first_read_delay)
 
     if DEBUG:
         print(f"Reading Vblank counter until heralded value appears")
+
     try:
         vblank_counter = bot.read_vblank_counter()
 
@@ -140,6 +146,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
     if DEBUG:
         print(f"Heralded value was found, pausing for 24 seconds")
+
     # Stall until the BlinkPressStart task has been initialized
     bot.pause(24)
 

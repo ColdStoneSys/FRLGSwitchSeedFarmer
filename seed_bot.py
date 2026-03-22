@@ -184,6 +184,7 @@ class SeedBot:
 
     def restart_game(self, should_reconnect=False, release="A", quit_game=True):
         self.release(release)
+        self.pause(0.05)
 
         if quit_game:
             self.quit_game()
@@ -375,6 +376,7 @@ class SeedBotUSB:
 
     def restart_game(self, should_reconnect=False, release="A", quit_game=True):
         self.release(release)
+        self.pause(0.05)
 
         if quit_game:
             self.quit_game()
