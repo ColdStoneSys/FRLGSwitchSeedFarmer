@@ -92,20 +92,22 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     tic = 0
     toc = 0
     # Boot time measurement statistics never had a value outside range of 2.5 to 3.1 seconds
-    # shift those endpoints by 100ms and round the ms per frame down/up accordingly for safety 
+    # shift those endpoints by 100ms and round the ms per frame down/up accordingly for safety
     # vblankCounter is reset to zero approximately 16 frames post boot by the bootup process.
-    first_read_delay = 0 + (LOW_VBLANK_HERALDING + 16) * 0.016 
+    first_read_delay = 0 + (LOW_VBLANK_HERALDING + 16) * 0.016
     vblank_timeout = 0.8 + (LOW_VBLANK_HERALDING + 16) * 0.017
-    
+
     if reconnect:
         first_read_delay -= 1.5
         vblank_timeout -= 1.5
-    
+
     bot.restart_game(should_reconnect = reconnect, release=SEED_BUTTON)
     reset_time = perf_counter()
+
     if DEBUG:
         print(f"Finished resetting, pausing for {first_read_delay} seconds")
     bot.pause(first_read_delay)
+
     if DEBUG:
         print(f"Reading Vblank counter until heralded value appears")
     try:
@@ -135,6 +137,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         reconnect = True
         consecutive_failures += 1
         continue
+
     if DEBUG:
         print(f"Heralded value was found, pausing for 24 seconds")
     # Stall until the BlinkPressStart task has been initialized
@@ -143,6 +146,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     if seed_delay == 0:
         if DEBUG:
             print(f"Attempting to detect title screen scene run")
+
         try:
             first_task_data = bot.read_first_task_data()
 
@@ -175,6 +179,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     else:
         if DEBUG:
             print(f"Attempting to detect BLINK_START task")
+
         try:
             task_two_pointer = bot.read_task_two_pointer()
 
@@ -205,9 +210,10 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             reconnect = True
             consecutive_failures += 1
             continue
-        
+
         if DEBUG:
             print(f"Following chain of BLINK_START counters to delay press appropriately")
+
         # Stall until the right number of main game loops have occured
         try:
             while loop_counter < seed_delay - 1:
@@ -279,12 +285,16 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     # A press to trigger seed
     bot.press(SEED_BUTTON)
     toc = perf_counter()
+
     if DEBUG:
         print(f"PRESSED A to get seed, pausing for 2.05 seconds to wait for latch")
+
     this_time = toc-tic
     bot.pause(2.05)
+
     if DEBUG:
         print(f"Attempting to detect box pointer initialization to know seed read is safe")
+
     # Stall until seed is initialized
     ok = True
 
@@ -314,6 +324,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
     if DEBUG:
         print(f"Reading Seed")
+
     # Collect data
     try:
         initial_seed = bot.read_initial_seed()
@@ -343,7 +354,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         if repeat_counter == REPEAT_TIMES:
             repeat_counter = 0
             seed_delay += 1
-    else: 
+    else:
         # "AUTO" mode checks for apparent timing discrepencies, will only commit entries once a unique mode emerges
         if prior_time and ( this_time - prior_time > 0.05 or this_time < prior_time ):
             print(f"Apparent discrepency. Discarding last measurement")
@@ -352,13 +363,12 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             current_times.append(this_time)
             counts = Counter(current_seeds)
             two_most_frequent = counts.most_common(2)
-            
 
-            if (  
+            if (
                 two_most_frequent[0][1] > 1                              # Most common seed has appeared multiple times
                 and ( len(two_most_frequent) == 1                        # Most common seed is only seed
                 or    two_most_frequent[0][1] > two_most_frequent[1][1]) # Multiple seeds, but unique mode
-                ):            
+                ):
                 most_frequent_seed = two_most_frequent[0][0]
                 t = 0
 
@@ -377,5 +387,6 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
 
     if DEBUG:
         print("No problems. Resetting for next cycle")
+
     consecutive_failures = 0
     reconnect = False
