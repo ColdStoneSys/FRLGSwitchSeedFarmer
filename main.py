@@ -31,7 +31,6 @@ else:
 OUTPUT_FILE_NAME = config["OUTPUT_FILE_NAME"]
 USB = config["USB"]
 DEBUG = config["DEBUG"]
-EMUNAND = config["EMUNAND"]
 
 bot = (
     SeedBotUSB(config["USB_INDEX"], config["SKIP_PROFILE"])
@@ -110,6 +109,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         print(f"Reading Vblank counter until heralded value appears")
     try:
         vblank_counter = bot.read_vblank_counter()
+
         if DEBUG:
             print(f"VBlank: {vblank_counter}")
 
@@ -157,7 +157,6 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                     print(hex(first_task_data))
 
                 first_task_data = bot.read_first_task_data()
-
         except TimeoutError as e:
             print(e)
             bot.pause(15)
@@ -172,7 +171,6 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             reconnect = True
             consecutive_failures += 1
             continue
-
     else:
         if DEBUG:
             print(f"Attempting to detect BLINK_START task")
@@ -288,6 +286,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         print(f"Attempting to detect box pointer initialization to know seed read is safe")
     # Stall until seed is initialized
     ok = True
+
     try:
         while not bot.read_is_box_pointer_initialized():
             if perf_counter() - toc > 3:
@@ -295,7 +294,6 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 break
 
             bot.pause(0.2)
-
     # TODO: actual exception types
     except Exception:
         print(
@@ -336,6 +334,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     if REPEAT_MODE == "FIXED":
         # "FIXED" mode records all entries
         repeat_counter += 1
+
         with open(OUTPUT_FILE_NAME, "a", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
             writer.writerow([f"{initial_seed:04X}", seed_delay, this_time])
@@ -352,18 +351,22 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
             current_times.append(this_time)
             counts = Counter(current_seeds)
             two_most_frequent = counts.most_common(2)
+
             if (  
                 (len(two_most_frequent) == 1 and two_most_frequent[0][1] > 1) # unique seed that has appeared more than once
                 or (two_most_frequent[0][1] > two_most_frequent[1][1]) # not unique seed, but there is a unique mode
                 ):            
                 most_frequent_seed = two_most_frequent[0][0]
                 t = 0
+
                 with open(OUTPUT_FILE_NAME, "a", newline="", encoding="utf-8") as file:
                     writer = csv.writer(file)
+
                     for seed_entry, time_entry in zip(current_seeds, current_times):
                         if seed_entry == most_frequent_seed:
                             writer.writerow([f"{seed_entry:04X}", seed_delay, time_entry])
                             t += time_entry
+
                 prior_time = t / two_most_frequent[0][1]
                 seed_delay +=1
                 current_seeds = []
@@ -373,4 +376,3 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         print("No problems. Resetting for next cycle")
     consecutive_failures = 0
     reconnect = False
-
