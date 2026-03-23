@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 import sys, socket, binascii
 from usb import core, util
 from time import sleep
@@ -78,15 +79,40 @@ GAMES = {
 }
 
 
-class SeedBot:
+class SeedBot(ABC):
     def __init__(self, skip_profile):
         self.skip_profile = skip_profile
+        self.connect()
+        self.detect_game()
 
-    def connect(self): raise NotImplementedError
-    def send_command(self, content): raise NotImplementedError
-    def read(self, address, size): raise NotImplementedError
-    def close(self, exitapp=True): raise NotImplementedError
-    def get_title_id(self): raise NotImplementedError
+    @abstractmethod
+    def connect(self):
+        pass
+
+    @abstractmethod
+    def send(self, data):
+        pass
+
+    @abstractmethod
+    def _read(self, size) -> bytes:
+        pass
+
+    @abstractmethod
+    def get_title_id(self) -> int:
+        pass
+
+    @abstractmethod
+    def shutdown(self):
+        pass
+
+    def send_command(self, content):
+        content += "\r\n"  # important for the parser on the switch side
+        self.send(content.encode())
+
+    # peek <address in hex, prefaced by 0x> <amount of bytes, dec or hex with 0x>
+    def read(self, address, size):
+        self.send_command(f"peek 0x{address:X} 0x{size:X}")
+        return self._read(size)
 
     # A/B/X/Y/LSTICK/RSTICK/L/R/ZL/ZR/PLUS/MINUS/DLEFT/DUP/DDOWN/DRIGHT/HOME/CAPTURE
     def click(self, button):
@@ -103,6 +129,17 @@ class SeedBot:
 
     def detach(self):
         self.send_command("detachController")
+
+    def close(self, exitapp=True):
+        print("Exiting...")
+        self.pause(0.5)
+        self.detach()
+        self.shutdown()
+
+        print("Bot Disconnected")
+
+        if exitapp:
+            sys.exit(0)
 
     def enter_game(self):
         self.click("A")
@@ -195,12 +232,11 @@ class SeedBot:
     def read_first_task_data(self):
         return int.from_bytes(self.read(self.current_seed_address + 0x98, 4), "little")
 
+
 class SeedBotIP(SeedBot):
     def __init__(self, ip, skip_profile):
-        super().__init__(skip_profile)
         self.ip = ip
-        self.connect()
-        self.detect_game()
+        super().__init__(skip_profile)
 
     def connect(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -210,13 +246,10 @@ class SeedBotIP(SeedBot):
         self.send_command("configure echoCommands 0")
         self.send_command("configure mainLoopSleepTime 0")
 
-    def send_command(self, content):
-        content += "\r\n"  # important for the parser on the Switch side
-        self.s.sendall(content.encode())
+    def send(self, data):
+        self.s.sendall(data)
 
-    # peek <address in hex, prefaced by 0x> <amount of bytes, dec or hex with 0x>
-    def read(self, address, size):
-        self.send_command(f"peek 0x{address:X} 0x{size:X}")
+    def _read(self, size):
         # TODO: sensible reading and not an arbitrary wait
         sleep(size / 0x8000)
         buf = self.s.recv(2 * size + 1)
@@ -224,16 +257,9 @@ class SeedBotIP(SeedBot):
 
         return buf
 
-    def close(self, exitapp=True):
-        print("Exiting...")
-        self.pause(0.5)
-        self.detach()
+    def shutdown(self):
         self.s.shutdown(socket.SHUT_RDWR)
         self.s.close()
-        print("Bot Disconnected")
-
-        if exitapp:
-            sys.exit(0)
 
     def get_title_id(self):
         self.send_command("getTitleID")
@@ -242,12 +268,11 @@ class SeedBotIP(SeedBot):
 
         return int(buf[0:-1], 16)
 
+
 class SeedBotUSB(SeedBot):
     def __init__(self, usb_index, skip_profile):
-        super().__init__(skip_profile)
         self.usb_index = usb_index
-        self.connect()
-        self.detect_game()
+        super().__init__(skip_profile)
 
     def connect(self):
         devices = list(core.find(find_all=True, idVendor=0x057E, idProduct=0x3000))
@@ -287,7 +312,8 @@ class SeedBotUSB(SeedBot):
         self.ep_out.write(packet_size.to_bytes(4, "little"))
         self.ep_out.write(data)
 
-    def read_usb(self):
+    # size here is only to match the ABC
+    def _read(self, size=None):
         size_bytes = self.ep_in.read(4, timeout=5000)
         size = int.from_bytes(size_bytes, "little")
         buf = bytearray()
@@ -298,28 +324,15 @@ class SeedBotUSB(SeedBot):
 
         return bytes(buf)
 
-    def send_command(self, content):
-        content += "\r\n"  # important for the parser on the switch side
-        self.send(content.encode())
-
     # peek <address in hex, prefaced by 0x> <amount of bytes, dec or hex with 0x>
     def read(self, address, size):
         self.send_command(f"peek 0x{address:X} 0x{size:X}")
 
-        return self.read_usb()
+        return self._read(size)
 
-    def close(self, exitapp=True):
-        print("Exiting...")
-        self.pause(0.5)
-        self.detach()
+    def shutdown(self):
         util.dispose_resources(self.device)
-        print("Bot Disconnected")
-
-        if exitapp:
-            sys.exit(0)
 
     def get_title_id(self):
         self.send_command("getTitleID")
-        sleep(0.005)
-
-        return int.from_bytes(self.read_usb(), "little")
+        return int.from_bytes(self._read(), "little")
