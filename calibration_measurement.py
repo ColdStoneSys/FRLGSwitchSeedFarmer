@@ -5,9 +5,6 @@ from seed_bot import SeedBot, SeedBotUSB
 with open("config.json", "r", encoding="utf-8") as f:
     config = json.load(f)
 
-
-SEED_BUTTON = config["SEED_BUTTON"]
-OUTPUT_FILE_NAME = config["OUTPUT_FILE_NAME"]
 USB = config["USB"]
 DEBUG = config["DEBUG"]
 
@@ -26,14 +23,13 @@ def signal_handler(_signal, _advances):  # CTRL+C handler
 signal.signal(signal.SIGINT, signal_handler)
 
 LOW_VBLANK_HERALDING = 256
-seeds_counter = 0
 reset_times = []
 reconnect = False
 bot.press("A")
 bot.pause(5)
 loop_counter = 0
 
-while loop_counter < 10:
+while loop_counter < 30:
     # Verify the game booted and get a time stamp for an event with fixed-time relative to boot
     tic = 0
     reset_time = 0
@@ -47,7 +43,7 @@ while loop_counter < 10:
         first_read_delay -= 1.5
         vblank_timeout -= 1.5
 
-    bot.restart_game(should_reconnect=reconnect, release=SEED_BUTTON)
+    bot.restart_game(should_reconnect=reconnect)
     reset_time = perf_counter()
 
     if DEBUG:
@@ -91,3 +87,6 @@ while loop_counter < 10:
         f"Measured a time of {this_time}. Running average is {sum(reset_times) / len(reset_times)}"
     )
     loop_counter += 1
+
+print(reset_times)
+
