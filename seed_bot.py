@@ -82,10 +82,10 @@ class SeedBot:
     def __init__(self, ip, skip_profile):
         self.ip = ip
         self.skip_profile = skip_profile
-        self.connect(ip)
+        self.connect()
         self.detect_game()
 
-    def connect(self, ip):
+    def connect(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.settimeout(1)
         self.s.connect((self.ip, 6000))
@@ -194,7 +194,7 @@ class SeedBot:
         if should_reconnect:
             self.close(False)
             self.pause(1.5)
-            self.connect(self.ip)
+            self.connect()
             self.detect_game()
 
     def read_initial_seed(self):
@@ -238,21 +238,21 @@ class SeedBotUSB:
     def __init__(self, index, skip_profile):
         self.index = index
         self.skip_profile = skip_profile
-        self.connect(self.index)
+        self.connect()
         self.detect_game()
 
-    def connect(self, index):
+    def connect(self):
         devices = list(core.find(find_all=True, idVendor=0x057E, idProduct=0x3000))
 
         if not devices:
             raise Exception("No Switch USB devices found")
 
-        if index >= len(devices):
+        if self.index >= len(devices):
             raise Exception(
-                f"The index {index} is higher than the numer of Switch USB devices found."
+                f"The index {self.index} is higher than the numer of Switch USB devices found."
             )
 
-        self.device = devices[index]
+        self.device = devices[self.index]
         self.device.set_configuration()
         cfg = self.device.get_active_configuration()
         intf = cfg[(0, 0)]
@@ -386,7 +386,7 @@ class SeedBotUSB:
         if should_reconnect:
             self.close(False)
             self.pause(1.5)
-            self.connect(self.index)
+            self.connect()
             self.detect_game()
 
     def read_initial_seed(self):
