@@ -1,12 +1,36 @@
 # FRLGSwitchSeedFarmer
 Python script for farming FRLG Initial Seeds on CFWed Switch
 
+## Prerequisites
+- CFWed Switch
+- [sys-botbase](https://github.com/olliz0r/sys-botbase?tab=readme-ov-file#installation) for WiFi setup or [sys-botbase-cpp](https://github.com/PokemonAutomation/sys-botbase-cpp?tab=readme-ov-file#installation) for USB setup, installed on the Switch
+- [Hekate-Toolbox](https://github.com/WerWolv/Hekate-Toolbox/releases) installed on the Switch
+
+## Recommended setup according to reliability
+Be sure to have your Switch charging so it doesn't die or suffer reduced performance
+- (Best) SysNAND + sys-botbase-cpp + Switch USB connected to the PC
+- (Best) SysNAND + sys-botbase + Switch and PC both connected to the router via Ethernet cable
+- (Good) SysNAND + sys-botbase + PC connected to the router via Ethernet cable and Switch WiFi connected
+- (Medium) emuNAND + sys-botbase-cpp + Switch USB connected to the PC
+- (Medium) emuNAND + sys-botbase + Switch and PC both connected to the router via Ethernet cable
+- (Bad) all other setups
+
+## How to run the script using Python
+1) Install [Python](https://www.python.org/downloads/) (be sure to add it to `PATH` during the installation)
+2) Open the terminal inside the folder of this project
+3) Run `pip install -r requirements.txt` to install all the needed dependencies
+4) Run `python main.py`
+
+## How to run the script without Python
+1) Download the [latest release](https://github.com/Real96/FRLGSwitchSeedFarmer/releases/tag/latest-commit) of the executable
+2) Run it
+
 ## Usage:
-1) Install [sys-botbase](https://github.com/olliz0r/sys-botbase?tab=readme-ov-file#installation) for WiFi setup or [sys-botbase-cpp](https://github.com/PokemonAutomation/sys-botbase-cpp?tab=readme-ov-file#installation) for USB setup, and start it
-3) Edit all the settings inside the `config.json` file
-4) Connect the Switch and the PC to the same WiFi/Ethernet connection
-5) Start Pokémon FireRed or Pokémon LeafGreen
-6) Start the script or the executable
+1) Set up one of the environments described above
+2) Start sys-botbase / sys-botbase-cpp on your Switch
+3) Edit all the settings of the `config.json` file inside the folder of this project
+4) Start Pokémon FireRed or Pokémon LeafGreen
+5) Run the script choosing one of the two methods described above
 
 ## Settings
 ### IP
