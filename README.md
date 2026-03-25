@@ -17,10 +17,10 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 
 ## Setup Hekate-Toolbox
 1) Download [toolbox.json](https://downgit.github.io/#/home?url=https://github.com/Real96/FRLGSwitchSeedFarmer/blob/main/toolbox.json) file
-2) Copy it in /atmosphere/contents/430000000000000B/ folder, inside the Switch
+2) Copy it in `/atmosphere/contents/430000000000000B/` folder, inside the Switch SD card
 
 ## Start sys-botbase / sys-botbase-cpp
-1) Boot atmosphere on your Swich
+1) Boot Atmosphere on your Swich
 2) Go inside the Homebrew menu
 3) Run Hekate-Toolbox
 4) Turn on sys-botbase / sys-botbase-cpp
@@ -38,7 +38,7 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 ## Usage:
 1) Set up one of the environments described above ([**Recommended setup according to reliability**](https://github.com/Real96/FRLGSwitchSeedFarmer/edit/main/README.md#recommended-setup-according-to-reliability))
 2) Start sys-botbase / sys-botbase-cpp on your Switch from Hekate-Toolbox (inside the Homebrew menu)
-3) Edit all the settings of the `config.json` file, which is inside the folder of this project
+3) Edit the necessary settings of the `config.json` file, which is inside the folder of this project
 4) Start Pokémon FireRed or Pokémon LeafGreen
 5) Run the script choosing one of the two "**How to run**" methods described above
 
