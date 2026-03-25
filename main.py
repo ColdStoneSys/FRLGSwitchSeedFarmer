@@ -117,10 +117,11 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         print("Reading VBlank counter until heralded value appears")
 
     try:
+        read_enter = perf_counter()
         vblank_counter = bot.read_vblank_counter()
-
+        read_exit = perf_counter()
         if DEBUG:
-            print(f"VBlank: {vblank_counter}")
+            print(f"VBlank: {vblank_counter}. Time on read {read_exit-read_enter}")
 
         while vblank_counter != LOW_VBLANK_HERALDING:
             if perf_counter() - reset_time > vblank_timeout:
@@ -128,10 +129,12 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 raise TimeoutError
 
             bot.pause(0.002)
+            read_enter = perf_counter()
             vblank_counter = bot.read_vblank_counter()
+            read_exit = perf_counter()
 
             if DEBUG:
-                print(f"VBlank: {vblank_counter}")
+                print(f"VBlank: {vblank_counter}. Time on read {read_exit-read_enter}")
 
         tic = perf_counter()
     # TODO: actual exception types
