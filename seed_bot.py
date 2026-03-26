@@ -307,6 +307,17 @@ class SeedBotUSB(SeedBot):
             raise Exception("USB endpoints not found")
 
         print("Bot Connected")
+        while True:
+            try:
+                ep_in.read(ep_in.wMaxPacketSize, timeout=5)                
+            except usb.core.USBError as e:
+                # timeout (errno 110 or 60 depending on OS) means buffer is empty
+                if e.errno in (110, 60, 10060): # 110=Linux, 60=macOS, 10060=Win
+                    break
+                else:
+                    # Handle unexpected errors if necessary
+                    pass
+        print("Recieve flushed")
 
     def _send(self, data: bytes):
         packet_size = len(data) + 2
