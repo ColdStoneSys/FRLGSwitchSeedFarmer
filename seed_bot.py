@@ -309,13 +309,14 @@ class SeedBotUSB(SeedBot):
         print("Bot Connected")
         while True:
             try:
+                print("Entered try")
                 print(f"Attempting to read next {self.ep_in.wMaxPacketSize} bytes")  
                 raw_in = self.ep_in.read(self.ep_in.wMaxPacketSize, timeout=30)
                 print(f"flushed {self.ep_in.wMaxPacketSize} bytes from input: {raw_in}")      
             except core.USBTimeoutError as e:
                  print(f"Timeout error: {e}, {type(e)}, errno: {e.errno} backend_error_code {e.backend_error_code}")
                  break
-            except Exception as e:
+            except core.USBError as e:
                 print(f"Actual error: {e}, {type(e)}, errno: {e.errno} backend_error_code {e.backend_error_code}")
         print("Recieve flushed")
 
