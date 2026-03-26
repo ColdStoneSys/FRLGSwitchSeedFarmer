@@ -313,25 +313,13 @@ class SeedBotUSB(SeedBot):
         self.ep_out.write(data)
 
     # size here is only to match the ABC
-    def _read(self, size=None):
-        tic = perf_counter()
-        size_bytes = self.ep_in.read(4, timeout=1000)
-        toc = perf_counter()
-
-        if toc - tic > 1:
-            raise TimeoutError
-
+    def _read(self, size):
+        size_bytes = self.ep_in.read(4, timeout=30)
         size = int.from_bytes(size_bytes, "little")
         buf = bytearray()
 
         while len(buf) < size:
-            tic = perf_counter()
-            chunk = self.ep_in.read(size - len(buf), timeout=1000)
-            toc = perf_counter()
-
-            if toc - tic > 1:
-                raise TimeoutError
-
+            chunk = self.ep_in.read(size - len(buf), timeout=30)
             buf.extend(chunk)
 
         return bytes(buf)
