@@ -310,7 +310,7 @@ class SeedBotUSB(SeedBot):
         while True:
             try:
                 ep_in.read(ep_in.wMaxPacketSize, timeout=5)                
-            except usb.core.USBError as e:
+            except core.USBError as e:
                 # timeout (errno 110 or 60 depending on OS) means buffer is empty
                 if e.errno in (110, 60, 10060): # 110=Linux, 60=macOS, 10060=Win
                     break
