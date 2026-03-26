@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import sys, socket, binascii
 from usb import core, util
-from time import sleep
+from time import sleep, perf_counter
 
 GAMES = {
     0x1006FA0233F8000: {
@@ -314,12 +314,20 @@ class SeedBotUSB(SeedBot):
 
     # size here is only to match the ABC
     def _read(self, size=None):
-        size_bytes = self.ep_in.read(4, timeout=5000)
+        tic = perf_counter()
+        size_bytes = self.ep_in.read(4, timeout=1000)
+        toc = perf_counter()
+        if toc - tic > 1:
+            raise TimeoutError
         size = int.from_bytes(size_bytes, "little")
         buf = bytearray()
 
         while len(buf) < size:
-            chunk = self.ep_in.read(size - len(buf), timeout=5000)
+            tic = perf_counter()
+            chunk = self.ep_in.read(size - len(buf), timeout=1000)
+            toc = perf_counter()
+            if toc - tic > 1:
+                raise TimeoutError
             buf.extend(chunk)
 
         return bytes(buf)
