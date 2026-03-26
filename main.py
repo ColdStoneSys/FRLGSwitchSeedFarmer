@@ -226,6 +226,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         # Stall until the right number of main game loops have occured
         try:
             while loop_counter < seed_delay - 1:
+                bot.pause(0.001)
                 blink_data = bot.read_blink_start_counter()
                 index = loop_counter % 90
 
