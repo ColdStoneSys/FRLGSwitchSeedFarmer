@@ -313,7 +313,7 @@ class SeedBotUSB(SeedBot):
         self.ep_out.write(data)
 
     # size here is only to match the ABC
-    def _read(self, size):
+    def _read(self, size=None):
         size_bytes = self.ep_in.read(4, timeout=30)
         size = int.from_bytes(size_bytes, "little")
         buf = bytearray()
