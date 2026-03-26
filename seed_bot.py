@@ -333,7 +333,7 @@ class SeedBotUSB(SeedBot):
     def get_title_id(self):
         self.send_command("getTitleID")
 
-        return int.from_bytes(self._read(size=16), "little")
+        return int.from_bytes(self._read(size=8), "little")
 
     def shutdown(self):
         util.dispose_resources(self.device)
