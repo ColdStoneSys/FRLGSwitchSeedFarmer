@@ -42,6 +42,10 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 4) Start Pokémon FireRed or Pokémon LeafGreen
 5) Run the script choosing one of the two "**How to run**" methods described above
 
+## Troubleshooting
+- When you stop the script and you want to restart it, <ins>**ALWAYS**</ins> turn sys-botbase / sys-botbase-cpp off and back on from Hekate-Toolbox
+- Be sure to disconnect all Joy-Con or controllers from the Switch to prevent drift from causing issues
+
 ## Settings
 ### IP
 The IP address of your console (`System Settings` > `Internet` > `IP address`). Used only if `USB` setting is set to `false`.
@@ -62,10 +66,10 @@ The button that will be pressed and held on the title screen to get a seed. Must
 If REPEAT_MODE is set to "FIXED", will repeat each seed attempt however many times this variable is set to. Ignored if REPEAT_MODE is set to "AUTO".
 
 ### OUTPUT_FILE_NAME
-Name of CSV file in which raw results will be stored. It will be saved in the same folder of the script/executable. Highly recommended that this contains details about version, language, sound & LR button options, and the seed button for your own sanity. 
+Name of CSV file in which raw results will be stored. It will be saved in the same folder of the script. Highly recommended that this contains details about version, language, sound & LR button options, and the seed button for your own sanity. 
 
 ### PROCESSED_FILE_NAME
-Name of CSV file in which processed results will be stored. Processed results compress duplicate seed entries and provides a time estimate. It will be saved in the same folder of the script/executable. Highly recommended that this contains details about version, language, sound & LR button options, and the seed button for your own sanity. 
+Name of CSV file in which processed results will be stored. Processed results compress duplicate seed entries and provides a time estimate. It will be saved in the same folder of the script. Highly recommended that this contains details about version, language, sound & LR button options, and the seed button for your own sanity. 
 
 ### PROCESSED_TIME_UNIT
 Fraction of a GBA frame you want time estimates rounded to. A value of 2 would be rounding to the nearest half-frame.
