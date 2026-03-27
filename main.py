@@ -117,6 +117,7 @@ for i in range(90):
 intermediate_check_one = tuple(intermediate_check_one)
 intermediate_check_two = tuple(intermediate_check_two)
 intermediate_check_three = tuple(intermediate_check_three)
+good_values = tuple(zip(blink_start_good_values, intermediate_check_one, intermediate_check_two, intermediate_check_three))
 
 seed_delay = INITIAL_SEED_DELAY + seeds_counter
 current_seeds = []
@@ -273,12 +274,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 index = loop_counter % 90
 
                 # Data matches the next expected value in the sequence or one of the expected intermediates
-                if  (
-                        blink_data == blink_start_good_values[index]
-                  or    blink_data == intermediate_check_one[index]
-                  or    blink_data == intermediate_check_two[index]
-                  or    blink_data == intermediate_check_three[index]
-                  ):
+                if blink_data in good_values[index]:
                     loop_counter += 1
                     prior_blink_data = blink_start_good_values[index]
                     continue
@@ -286,16 +282,11 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                 # Test for if a single main loop was missed
                 loop_counter += 1
 
-                # Only perform this test if skipping a main loop doesn't make us miss target
+                # Only perform skipped main loop test if skipping a main loop lands us prior to the target
                 if loop_counter < seed_delay - 2:
                     index = loop_counter % 90
 
-                    if  (
-                            blink_data == blink_start_good_values[index]
-                      or    blink_data == intermediate_check_one[index]
-                      or    blink_data == intermediate_check_two[index]
-                      or    blink_data == intermediate_check_three[index]
-                      ):
+                    if blink_data in good_values[index]:
                         loop_counter += 1
                         prior_blink_data = blink_start_good_values[index]
                         continue
