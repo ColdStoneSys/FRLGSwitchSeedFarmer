@@ -272,22 +272,21 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                             prior_blink_data = blink_start_good_values[index]
                             loop_counter += 1
                             continue
-                            
+
                     # Test for if a single main loop was missed
-                    loop_counter +=1 
+                    loop_counter += 1
                     # Only perform this test if skipping a main loop doesn't make us miss target
                     if loop_counter < seed_delay - 1:
-                        
+
                         prior_blink_data = blink_start_good_values[index]
                         index = loop_counter % 90
-                        
+
                         # Data is a match for following the next sequence
                         if blink_data == blink_start_good_values[index]:
                             loop_counter += 1
                             prior_blink_data = blink_data
                             continue
-                            
-                            
+
                         prior_zero = prior_blink_data & 0xFFFF
                         prior_one = (prior_blink_data >> 16) & 0xFFFF
 
@@ -320,8 +319,8 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                             if blink_data == test_prior:
                                 prior_blink_data = blink_start_good_values[index]
                                 loop_counter += 1
-                                continue                        
-  
+                                continue
+
                     # None of the test cases made sense, so we raise an error because we don't understand where we are in the cycle
                     raise ValueError(
                         f"New data {blink_data} not consistent with old data {prior_blink_data}"
