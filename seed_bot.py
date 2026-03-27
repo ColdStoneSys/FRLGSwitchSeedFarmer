@@ -347,6 +347,7 @@ class SeedBotUSB(SeedBot):
 
     def get_title_id(self):
         self.send_command("getTitleID")
+        bot.pause(0.01)
 
         return int.from_bytes(self._read(size=8), "little")
 
