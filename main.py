@@ -296,11 +296,11 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                         loop_counter += 1
                         prior_blink_data = blink_start_good_values[index]
                         continue              
-
                 # None of the test cases made sense, so we raise an error because we don't understand where we are in the cycle
                 raise ValueError(
                     f"New data {blink_data} not consistent with old data {prior_blink_data}"
                 )
+
         except ValueError as e:
             print(e)
             bot.pause(15)
