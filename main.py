@@ -81,6 +81,44 @@ for i in range(90):
     blink_start_good_values[i] = (data_two << 32) | (data_one << 16) | data_zero
 
 blink_start_good_values = tuple(blink_start_good_values)
+intermediate_check_one = [0 for _ in range(90)]
+intermediate_check_two = [0 for _ in range(90)]
+intermediate_check_three = [0 for _ in range(90)]
+
+for i in range(90):
+    
+    prior = blink_start_good_values[i]
+    new_index = i + 1
+    if new_index == 90:
+        new_index = 0
+       
+    prior_zero = prior & 0xFFFF
+    prior_one = (prior >> 16) & 0xFFFF
+
+    if prior_one == 1:
+        base = 0x1E00010000
+    else:
+        base = 0x3C00000000
+
+    intermediate_one = base | prior_zero
+
+    prior_zero += 1
+    intermediate_two = base | prior_zero
+
+    prior_two = base >> 32
+    if prior_zero >= prior_two:
+        intermediate_three = base
+    else:
+        intermediate_three = intermediate_two
+
+    intermediate_check_one[new_index] = intermediate_one
+    intermediate_check_two[new_index] = intermediate_two
+    intermediate_check_three[new_index] = intermediate_three
+
+intermediate_check_one = tuple(intermediate_check_one)
+intermediate_check_two = tuple(intermediate_check_two)
+intermediate_check_three = tuple(intermediate_check_three)
+
 seed_delay = INITIAL_SEED_DELAY + seeds_counter
 current_seeds = []
 current_times = []
@@ -226,106 +264,43 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
         # Stall until the right number of main game loops have occured
         try:
             while loop_counter < seed_delay - 1:
-                bot.pause(0.001)
+                bot.pause(0.0005)
                 blink_data = bot.read_blink_start_counter()
+                
+                # Simplest case is an identical read to prior
+                if blink_data == prior_blink_data:
+                    continue
                 index = loop_counter % 90
-
-                # Data matches the next expected value in the sequence
-                if blink_data == blink_start_good_values[index]:
+                # Data matches the next expected value in the sequence or one of the expected intermediates
+                if  (
+                        blink_data == blink_start_good_values[index]
+                  or    blink_data == intermediate_check_one[index]
+                  or    blink_data == intermediate_check_two[index]
+                  or    blink_data == intermediate_check_three[index]                  
+                  ):
                     loop_counter += 1
-                    prior_blink_data = blink_data
-                else:
-                    # Data is same as old data
-                    if blink_data == prior_blink_data:
-                        continue
+                    prior_blink_data = blink_start_good_values[index]
+                    continue
 
-                    prior_zero = prior_blink_data & 0xFFFF
-                    prior_one = (prior_blink_data >> 16) & 0xFFFF
-
-                    if prior_one == 1:
-                        base = 0x1E00010000
-                    else:
-                        base = 0x3C00000000
-
-                    # There are a number of edge cases that would only happen extremely rarely if we read in the middle of the function that we test for
-                    test_prior = base | prior_zero
-
-                    if blink_data == test_prior:
-                        prior_blink_data = blink_start_good_values[index]
+                # Test for if a single main loop was missed
+                loop_counter +=1 
+                # Only perform this test if skipping a main loop doesn't make us miss target
+                if loop_counter < seed_delay - 1:
+                    index = loop_counter % 90
+                    if  (
+                            blink_data == blink_start_good_values[index]
+                      or    blink_data == intermediate_check_one[index]
+                      or    blink_data == intermediate_check_two[index]
+                      or    blink_data == intermediate_check_three[index]                  
+                      ):
                         loop_counter += 1
-                        continue
-
-                    prior_zero += 1
-                    test_prior = base | prior_zero
-
-                    if blink_data == test_prior:
                         prior_blink_data = blink_start_good_values[index]
-                        loop_counter += 1
-                        continue
+                        continue              
 
-                    prior_two = base >> 32
-
-                    if prior_zero >= prior_two:
-                        test_prior = base
-
-                        if blink_data == test_prior:
-                            prior_blink_data = blink_start_good_values[index]
-                            loop_counter += 1
-                            continue
-                            
-                    # Test for if a single main loop was missed
-                    loop_counter +=1 
-                    # Only perform this test if skipping a main loop doesn't make us miss target
-                    if loop_counter < seed_delay - 1:
-                        
-                        prior_blink_data = blink_start_good_values[index]
-                        index = loop_counter % 90
-                        
-                        # Data is a match for following the next sequence
-                        if blink_data == blink_start_good_values[index]:
-                            loop_counter += 1
-                            prior_blink_data = blink_data
-                            continue
-                            
-                            
-                        prior_zero = prior_blink_data & 0xFFFF
-                        prior_one = (prior_blink_data >> 16) & 0xFFFF
-
-                        if prior_one == 1:
-                            base = 0x1E00010000
-                        else:
-                            base = 0x3C00000000
-
-                        # There are a number of edge cases that would only happen extremely rarely if we read in the middle of the function that we test for
-                        test_prior = base | prior_zero
-
-                        if blink_data == test_prior:
-                            prior_blink_data = blink_start_good_values[index]
-                            loop_counter += 1
-                            continue
-
-                        prior_zero += 1
-                        test_prior = base | prior_zero
-
-                        if blink_data == test_prior:
-                            prior_blink_data = blink_start_good_values[index]
-                            loop_counter += 1
-                            continue
-
-                        prior_two = base >> 32
-
-                        if prior_zero >= prior_two:
-                            test_prior = base
-
-                            if blink_data == test_prior:
-                                prior_blink_data = blink_start_good_values[index]
-                                loop_counter += 1
-                                continue                        
-  
-                    # None of the test cases made sense, so we raise an error because we don't understand where we are in the cycle
-                    raise ValueError(
-                        f"New data {blink_data} not consistent with old data {prior_blink_data}"
-                    )
+                # None of the test cases made sense, so we raise an error because we don't understand where we are in the cycle
+                raise ValueError(
+                    f"New data {blink_data} not consistent with old data {prior_blink_data}"
+                )
         except ValueError as e:
             print(e)
             bot.pause(15)
