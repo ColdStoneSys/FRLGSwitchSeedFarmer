@@ -272,7 +272,56 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
                             prior_blink_data = blink_start_good_values[index]
                             loop_counter += 1
                             continue
+                            
+                    # Test for if a single main loop was missed
+                    loop_counter +=1 
+                    # Only perform this test if skipping a main loop doesn't make us miss target
+                    if loop_counter < seed_delay - 1:
+                        
+                        prior_blink_data = blink_start_good_values[index]
+                        index = loop_counter % 90
+                        
+                        # Data is a match for following the next sequence
+                        if blink_data == blink_start_good_values[index]:
+                            loop_counter += 1
+                            prior_blink_data = blink_data
+                            continue
+                            
+                            
+                        prior_zero = prior_blink_data & 0xFFFF
+                        prior_one = (prior_blink_data >> 16) & 0xFFFF
 
+                        if prior_one == 1:
+                            base = 0x1E00010000
+                        else:
+                            base = 0x3C00000000
+
+                        # There are a number of edge cases that would only happen extremely rarely if we read in the middle of the function that we test for
+                        test_prior = base | prior_zero
+
+                        if blink_data == test_prior:
+                            prior_blink_data = blink_start_good_values[index]
+                            loop_counter += 1
+                            continue
+
+                        prior_zero += 1
+                        test_prior = base | prior_zero
+
+                        if blink_data == test_prior:
+                            prior_blink_data = blink_start_good_values[index]
+                            loop_counter += 1
+                            continue
+
+                        prior_two = base >> 32
+
+                        if prior_zero >= prior_two:
+                            test_prior = base
+
+                            if blink_data == test_prior:
+                                prior_blink_data = blink_start_good_values[index]
+                                loop_counter += 1
+                                continue                        
+  
                     # None of the test cases made sense, so we raise an error because we don't understand where we are in the cycle
                     raise ValueError(
                         f"New data {blink_data} not consistent with old data {prior_blink_data}"
