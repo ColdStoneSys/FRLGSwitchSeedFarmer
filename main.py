@@ -117,7 +117,14 @@ for i in range(90):
 intermediate_check_one = tuple(intermediate_check_one)
 intermediate_check_two = tuple(intermediate_check_two)
 intermediate_check_three = tuple(intermediate_check_three)
-good_values = tuple(zip(blink_start_good_values, intermediate_check_one, intermediate_check_two, intermediate_check_three))
+good_values = tuple(
+    zip(
+        blink_start_good_values,
+        intermediate_check_one,
+        intermediate_check_two,
+        intermediate_check_three,
+    )
+)
 
 seed_delay = INITIAL_SEED_DELAY + seeds_counter
 current_seeds = []
