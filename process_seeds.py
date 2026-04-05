@@ -12,7 +12,7 @@ RAW_FILE_NAME = ""
 matching_files = [f for f in os.listdir(".") if f.startswith(RAW_FILE_NAME_BASE)]
 
 if not matching_files:
-    print(f"No files with name starting with \"{RAW_FILE_NAME_BASE}\" found.")
+    print(f'No files with name starting with "{RAW_FILE_NAME_BASE}" found.')
     exit()
 
 print("Raw files found:\n")
@@ -35,7 +35,6 @@ except ValueError:
 PROCESSED_FILENAME = config["PROCESSED_FILE_NAME_BASE"] + matching_files[
     choice - 1
 ].removeprefix(RAW_FILE_NAME_BASE)
-
 seeds = None
 frames = None
 times = None
@@ -117,4 +116,4 @@ with open(PROCESSED_FILENAME, "w+", newline="", encoding="utf-8") as f:
     for row in rows:
         writer.writerow(row)
 
-print(f"\nProcessed seeds file name: \"{PROCESSED_FILENAME}\"")
+print(f'\nProcessed seeds file name: "{PROCESSED_FILENAME}"')
