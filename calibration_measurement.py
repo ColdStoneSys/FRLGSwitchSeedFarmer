@@ -1,5 +1,5 @@
 import json, signal
-from seed_bot import SeedBot, SeedBotUSB
+from seed_bot import SeedBotIP, SeedBotUSB
 from time import perf_counter
 
 with open("config.json", "r", encoding="utf-8") as f:
@@ -11,7 +11,7 @@ DEBUG = config["DEBUG"]
 bot = (
     SeedBotUSB(config["USB_INDEX"], config["SKIP_PROFILE"])
     if USB
-    else SeedBot(config["IP"], config["SKIP_PROFILE"])
+    else SeedBotIP(config["IP"], config["SKIP_PROFILE"])
 )
 
 
