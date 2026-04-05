@@ -5,73 +5,85 @@ from usb import core, util
 
 GAMES = {
     0x1006FA0233F8000: {
-        "Game": "FireRed (JPN)",
+        "Version": "FireRed",
+        "Language": "JPN",
         "VBlankCounter": 0xBD68B304,
         "CurrentSeedAddress": 0xBD68D230,
         "BlinkStartValue": 0x807C3A1,
     },
     0x100F1E0233FA000: {
-        "Game": "LeafGreen (JPN)",
+        "Version": "LeafGreen",
+        "Language": "JPN",
         "VBlankCounter": 0xBD68B304,
         "CurrentSeedAddress": 0xBD68D230,
         "BlinkStartValue": 0x807C3A1,
     },
     0x100554023408000: {
-        "Game": "FireRed (ENG)",
+        "Version": "FireRed",
+        "Language": "ENG",
         "VBlankCounter": 0xBD68B3A4,
         "CurrentSeedAddress": 0xBD68D2D0,
         "BlinkStartValue": 0x807CB65,
     },
     0x10034D02340E000: {
-        "Game": "LeafGreen (ENG)",
+        "Version": "LeafGreen",
+        "Language": "ENG",
         "VBlankCounter": 0xBD68B3A4,
         "CurrentSeedAddress": 0xBD68D2D0,
         "BlinkStartValue": 0x807CB65,
     },
     0x1004B3023412000: {
-        "Game": "FireRed (FRE)",
+        "Version": "FireRed",
+        "Language": "FRE",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
         "BlinkStartValue": 0x807CC6D,
     },
     0x10087C02342E000: {
-        "Game": "LeafGreen (FRE)",
+        "Version": "LeafGreen",
+        "Language": "FRE",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
         "BlinkStartValue": 0x807CC6D,
     },
     0x10092302342A000: {
-        "Game": "FireRed (ITA)",
+        "Version": "FireRed",
+        "Language": "ITA",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
         "BlinkStartValue": 0x807CB99,
     },
     0x1005C7023432000: {
-        "Game": "LeafGreen (ITA)",
+        "Version": "LeafGreen",
+        "Language": "ITA",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
         "BlinkStartValue": 0x807CB99,
     },
     0x1007F8023416000: {
-        "Game": "FireRed (GER)",
+        "Version": "FireRed",
+        "Language": "GER",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
         "BlinkStartValue": 0x807CBAD,
     },
     0x100FD6023430000: {
-        "Game": "LeafGreen (GER)",
+        "Version": "LeafGreen",
+        "Language": "GER",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
         "BlinkStartValue": 0x807CBAD,
     },
     0x100EB702342C000: {
-        "Game": "FireRed (SPA)",
+        "Version": "FireRed",
+        "Language": "SPA",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
         "BlinkStartValue": 0x807CC81,
     },
     0x1002B5023434000: {
-        "Game": "LeafGreen (SPA)",
+        "Version": "LeafGreen",
+        "Language": "SPA",
         "VBlankCounter": 0xBD68B2F4,
         "CurrentSeedAddress": 0xBD68D220,
         "BlinkStartValue": 0x807CC81,
@@ -191,12 +203,15 @@ class SeedBot(ABC):
             self.close()
         else:
             game_info = GAMES[title_id]
-            self.game_name = game_info["Game"]
+            self.game_version = game_info["Version"]
+            self.game_lang = game_info["Language"]
             self.initial_seed_address = 0x1208000
             self.current_seed_address = game_info["CurrentSeedAddress"]
             self.vblank_counter_address = game_info["VBlankCounter"]
             self.blink_start_value = game_info["BlinkStartValue"]
-            print(f"Game: {self.game_name}\n")
+            self.options_sound = self.read_options_sound()
+            self.options_button_mode = self.read_options_button_mode()
+            print(f"Game: {self.game_version} ({self.game_lang})\n")
             print(f"Sound: {self.read_options_sound()}")
             print(f"Button Mode: {self.read_options_button_mode()}")
 
@@ -232,12 +247,12 @@ class SeedBot(ABC):
         )
 
     def read_options_sound(self):
-        sound_mode = ["Mono", "Stereo"]
+        sound_mode = ["MONO", "STEREO"]
 
         return sound_mode[(self.read_options_bitfield()) >> 10 & 1]  # bit 9
 
     def read_options_button_mode(self):
-        button_mode = ["Help", "LR", "L=A"]
+        button_mode = ["HELP", "LR", "L=A"]
 
         return button_mode[self.read_options_bitfield() & 3]  # bits 0-1
 

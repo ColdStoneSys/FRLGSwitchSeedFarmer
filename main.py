@@ -27,8 +27,6 @@ else:
     raise ValueError(
         f"{REPEAT_MODE} is an invalid value for REPEAT_MODE. Acceptable values are 'AUTO' or 'FIXED'."
     )
-
-OUTPUT_FILE_NAME = config["OUTPUT_FILE_NAME"]
 USB = config["USB"]
 DEBUG = config["DEBUG"]
 
@@ -37,6 +35,10 @@ bot = (
     if USB
     else SeedBotIP(config["IP"], config["SKIP_PROFILE_ENABLED"])
 )
+
+game_version = "FR" if bot.game_version == "FireRed" else "LG"
+
+OUTPUT_FILE_NAME = f"{config["OUTPUT_FILE_NAME_BASE"]}_{game_version}_{bot.game_lang}_{bot.options_sound}_{bot.options_button_mode}_{SEED_BUTTON}.csv"
 
 
 def signal_handler(_signal, _advances):  # CTRL+C handler

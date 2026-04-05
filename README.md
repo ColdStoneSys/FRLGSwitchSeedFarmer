@@ -65,10 +65,10 @@ The button that will be pressed and held on the title screen to get a seed. Must
 ### REPEAT_TIMES
 If REPEAT_MODE is set to "FIXED", will repeat each seed attempt however many times this variable is set to. Ignored if REPEAT_MODE is set to "AUTO".
 
-### OUTPUT_FILE_NAME
+### OUTPUT_FILE_NAME_BASE
 Name of CSV file in which raw results will be stored. It will be saved in the same folder of the script. Highly recommended that this contains details about version, language, sound & LR button options, and the seed button for your own sanity. 
 
-### PROCESSED_FILE_NAME
+### PROCESSED_FILE_NAME_BASE
 Name of CSV file in which processed results will be stored. Processed results compress duplicate seed entries and provides a time estimate. It will be saved in the same folder of the script. Highly recommended that this contains details about version, language, sound & LR button options, and the seed button for your own sanity. 
 
 ### PROCESSED_TIME_UNIT

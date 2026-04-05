@@ -1,4 +1,4 @@
-import csv, json
+import csv, json, os
 from collections import Counter
 from itertools import zip_longest
 
@@ -6,8 +6,35 @@ with open("config.json", "r", encoding="utf-8") as f:
     config = json.load(f)
 
 SUBFRAME_MULTIPLIER = config["PROCESSED_TIME_UNIT"]
-RAW_FILE_NAME = config["OUTPUT_FILE_NAME"]
-PROCESSED_FILENAME = config["PROCESSED_FILE_NAME"]
+RAW_FILE_NAME_BASE = config["OUTPUT_FILE_NAME_BASE"]
+RAW_FILE_NAME = ""
+
+matching_files = [f for f in os.listdir(".") if f.startswith(RAW_FILE_NAME_BASE)]
+
+if not matching_files:
+    print(f"No files with name starting with \"{RAW_FILE_NAME_BASE}\" found.")
+    exit()
+
+print("Raw files found:\n")
+
+for i, filename in enumerate(matching_files, start=1):
+    print(f"{i}. {filename}")
+
+print()
+
+try:
+    choice = int(input("Enter the number of the csv file to process: "))
+
+    if 1 <= choice <= len(matching_files):
+        RAW_FILE_NAME = matching_files[choice - 1]
+    else:
+        print("Invalid selection.")
+except ValueError:
+    print("Please enter a valid number.")
+
+PROCESSED_FILENAME = config["PROCESSED_FILE_NAME_BASE"] + matching_files[
+    choice - 1
+].removeprefix(RAW_FILE_NAME_BASE)
 
 seeds = None
 frames = None
@@ -89,3 +116,5 @@ with open(PROCESSED_FILENAME, "w+", newline="", encoding="utf-8") as f:
 
     for row in rows:
         writer.writerow(row)
+
+print(f"\nProcessed seeds file name: \"{PROCESSED_FILENAME}\"")
