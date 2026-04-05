@@ -51,7 +51,7 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 The IP address of your console (`System Settings` > `Internet` > `IP address`). Used only if `USB` setting is set to `false`.
 
 ### FIRST_SEED_TO_COLLECT
-Used to specify where in a column to start farming seeds. A value of 0 will begin at the start of a column. A full column is should work out to <2450 seeds.
+Used to specify where in a column to start farming seeds. A value of 0 will begin at the start of a column. A full column is should work out to < 2450 seeds.
 
 ### SEEDS_TO_COLLECT
 Bot will run until this many seeds have been collected or it detects the title screen has looped. This number includes seed duplicates due to repeating the same frame. The recommended value with "AUTO" mode is 5500 for a full column run.
@@ -66,10 +66,10 @@ The button that will be pressed and held on the title screen to get a seed. Must
 If REPEAT_MODE is set to "FIXED", will repeat each seed attempt however many times this variable is set to. Ignored if REPEAT_MODE is set to "AUTO".
 
 ### OUTPUT_FILE_NAME_BASE
-Name of CSV file in which raw results will be stored. It will be saved in the same folder of the script. Highly recommended that this contains details about version, language, sound & LR button options, and the seed button for your own sanity. 
+Prefix of the CSV file name in which raw results will be stored. It will be saved in the same folder of the script. Details about version, language, sound & LR button options, and the seed button will be automatically appended to it.
 
 ### PROCESSED_FILE_NAME_BASE
-Name of CSV file in which processed results will be stored. Processed results compress duplicate seed entries and provides a time estimate. It will be saved in the same folder of the script. Highly recommended that this contains details about version, language, sound & LR button options, and the seed button for your own sanity. 
+Prefix of the CSV file name in which processed results will be stored. Processed results compress duplicate seed entries and provides a time estimate. It will be saved in the same folder of the script. Details about version, language, sound & LR button options, and the seed button will be automatically appended to it. 
 
 ### PROCESSED_TIME_UNIT
 Fraction of a GBA frame you want time estimates rounded to. A value of 2 would be rounding to the nearest half-frame.
