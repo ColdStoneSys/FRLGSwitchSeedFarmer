@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import sys, socket, binascii, json
 from usb import core, util
-from time import sleep, perf_counter
+from time import sleep
 
 GAMES = {
     0x1006FA0233F8000: {
