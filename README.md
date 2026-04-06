@@ -35,18 +35,18 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 1) Download the [latest release](https://github.com/Real96/FRLGSwitchSeedFarmer/releases/tag/latest-commit) of the executable
 2) Run it
 
-## How to find the Switch USB port number
+## How to find the Switch USB port and USB hub number
 ### Linux
 Run the following command in the terminal:
 
-`for d in /sys/bus/usb/devices/*; do [[ -f $d/idVendor && -f $d/idProduct ]] || continue; [[ $(cat $d/idVendor) == "057e" && $(cat $d/idProduct) == "3000" ]] || continue; basename $d | awk -F'[-.]' '{print "\nSwitch USB port number: " $NF "\n"}'; done`
+`echo; for d in /sys/bus/usb/devices/*; do [[ -f $d/idVendor && -f $d/idProduct ]] || continue; [[ $(cat $d/idVendor) == "057e" && $(cat $d/idProduct) == "3000" ]] || continue; p=${d##*/}; p=${p#*-}; [[ $p == *.* ]] && echo "USB_PORT: ${p##*.} - USB_HUB: ${p%%.*}" || echo "USB_PORT: $p - USB_HUB: null"; done; echo`
 
 ### Windows
 1) Right click on Windows logo (down-left) > `Device Manager`
 2) Go to `libusbK USB Devices` > `Nintendo Switch`
 3) Right click > `Properties`
 4) In `Location` you will see a text like the following one: `Port_#0004.Hub_#0001`
-5) Pick the number after the zeros (`4` in this case)
+5) Pick the numbers after the zeros (`USB_PORT` is `4` and `USB_HUB` is `1` in this case)
 
 ## Usage:
 1) Set up one of the environments described above ([**Recommended setup according to reliability**](https://github.com/Real96/FRLGSwitchSeedFarmer?tab=readme-ov-file#recommended-setup-according-to-reliability))
@@ -91,7 +91,10 @@ Fraction of a GBA frame you want time estimates rounded to. A value of 2 would b
 Set this to `true` if you want to run the bot through USB ports (best option if you don't have an ethernet dongle for connecting the switch to the router). Set this to `false` if you want to run the bot though Internet (WiFi/Ethernet).
 
 ### USB_PORT
-Number of the USB port of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`. To find the USB port number, use one the method described above according to your OS ([**How to find the Switch USB port**](https://github.com/Real96/FRLGSwitchSeedFarmer/tree/better_usb_binding?tab=readme-ov-file#how-to-find-the-switch-usb-port-number)).
+Number of the USB port of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`. To find the USB port number, use one the method described above according to your OS ([**How to find the Switch USB port**](https://github.com/Real96/FRLGSwitchSeedFarmer/tree/better_usb_binding?tab=readme-ov-file#how-to-find-the-switch-usb-hub-and-port-number)).
+
+### USB_HUB
+Number of the USB hub of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`. To find the USB hub number, use one of the methods described above according to your OS ([**How to find the Switch USB port and USB hub number**](https://github.com/Real96/FRLGSwitchSeedFarmer/tree/better_usb_binding?tab=readme-ov-file#how-to-find-the-switch-usb-port-and-hub-number)).
 
 ### SKIP_PROFILE_ENABLED
 Set this to `true` when you have the option `Skip Selection Screen` (`Settings` > `Users`) turned on. The option appears only when your Switch has just one profile. This will avoid some unnecessary A presses.
