@@ -39,7 +39,7 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 ### Linux
 Run the following command in the terminal:
 
-`for d in /sys/bus/usb/devices/*; do [[ -f $d/idVendor && -f $d/idProduct ]] || continue; [[ $(cat $d/idVendor) == "057e" && $(cat $d/idProduct) == "3000" ]] || continue; basename $d | awk -F'[-.]' '{print "\nSwitch USB port: " $NF "\n"}'; done`
+`for d in /sys/bus/usb/devices/*; do [[ -f $d/idVendor && -f $d/idProduct ]] || continue; [[ $(cat $d/idVendor) == "057e" && $(cat $d/idProduct) == "3000" ]] || continue; basename $d | awk -F'[-.]' '{print "\nSwitch USB port number: " $NF "\n"}'; done`
 
 ### Windows
 1) Right click on Windows logo (down-left) > `Device Manager`
