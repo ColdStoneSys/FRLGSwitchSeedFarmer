@@ -35,6 +35,13 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 1) Download the [latest release](https://github.com/Real96/FRLGSwitchSeedFarmer/releases/tag/latest-commit) of the executable
 2) Run it
 
+## How to find USB port number
+### Linux
+Run the following command in the terminal:
+`for d in /sys/bus/usb/devices/*; do [[ -f $d/idVendor && -f $d/idProduct ]] || continue; [[ $(cat $d/idVendor) == "057e" && $(cat $d/idProduct) == "3000" ]] || continue; basename $d | awk -F'[-.]' '{print "\nSwitch USB port: " $NF "\n"}'; done`
+
+### Windows
+
 ## Usage:
 1) Set up one of the environments described above ([**Recommended setup according to reliability**](https://github.com/Real96/FRLGSwitchSeedFarmer?tab=readme-ov-file#recommended-setup-according-to-reliability))
 2) Start sys-botbase / sys-botbase-cpp on your Switch from Hekate-Toolbox (inside the Homebrew menu)
@@ -77,8 +84,8 @@ Fraction of a GBA frame you want time estimates rounded to. A value of 2 would b
 ### USB
 Set this to `true` if you want to run the bot through USB ports (best option if you don't have an ethernet dongle for connecting the switch to the router). Set this to `false` if you want to run the bot though Internet (WiFi/Ethernet).
 
-### USB_INDEX
-Index of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`
+### USB_PORT
+USB port number of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`'
 
 ### SKIP_PROFILE_ENABLED
 Set this to `true` when you have the option `Skip Selection Screen` (`Settings` > `Users`) turned on. The option appears only when your Switch has just one profile. This will avoid some unnecessary A presses.
