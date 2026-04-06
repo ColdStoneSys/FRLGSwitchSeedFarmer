@@ -346,10 +346,17 @@ class SeedBotUSB(SeedBot):
     def match_port_and_hub(self, dev):
         ports = dev.port_numbers  # tuple like (hub, port)
 
-        if not ports or len(ports) < 2:
-            return ports[-1] == self.usb_port
-        else:
-            return ports[-2] == self.usb_hub and ports[-1] == self.usb_port
+        if not ports:
+            raise Exception(
+                f"No Switch USB device found on port {self.usb_port} and hub {self.usb_hub}"
+            )
+
+        hub = ports[-2] if len(ports) > 1 else None
+        port = ports[-1]
+
+        return port == self.usb_port and (
+            hub == self.usb_hub if hub is not None else True
+        )
 
     def get_usb_device(self):
         if platform.system() == "Windows":
@@ -366,7 +373,9 @@ class SeedBotUSB(SeedBot):
                     break
 
             if usb_index is None:
-                raise Exception(f"No Switch USB device found on port {self.usb_port} and hub {self.usb_hub}")
+                raise Exception(
+                    f"No Switch USB device found on port {self.usb_port} and hub {self.usb_hub}"
+                )
 
             devices = list(core.find(find_all=True, idVendor=0x057E, idProduct=0x3000))
 
