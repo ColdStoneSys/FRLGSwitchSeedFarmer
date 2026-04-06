@@ -91,10 +91,10 @@ Fraction of a GBA frame you want time estimates rounded to. A value of 2 would b
 Set this to `true` if you want to run the bot through USB ports (best option if you don't have an ethernet dongle for connecting the switch to the router). Set this to `false` if you want to run the bot though Internet (WiFi/Ethernet).
 
 ### USB_PORT
-Number of the USB port of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`. To find the USB port number, use one the method described above according to your OS ([**How to find the Switch USB port and USB hub number**](https://github.com/Real96/FRLGSwitchSeedFarmer/tree/better_usb_binding?tab=readme-ov-file#how-to-find-the-switch-usb-port-and-hub-numbers)).
+Number of the USB port of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`. To find the USB port number, use one the method described above according to your OS ([**How to find the Switch USB port and USB hub numbers**](https://github.com/Real96/FRLGSwitchSeedFarmer/tree/better_usb_binding?tab=readme-ov-file#how-to-find-the-switch-usb-port-and-usb-hub-numbers)).
 
 ### USB_HUB
-Number of the USB hub of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`. To find the USB hub number, use one of the methods described above according to your OS ([**How to find the Switch USB port and USB hub number**](https://github.com/Real96/FRLGSwitchSeedFarmer/tree/better_usb_binding?tab=readme-ov-file#how-to-find-the-switch-usb-port-and-hub-numbers)).
+Number of the USB hub of the Switch connected to the PC that will be attached to the bot. Used only if `USB` setting is set to `true`. To find the USB hub number, use one of the methods described above according to your OS ([**How to find the Switch USB port and USB hub numbers**](https://github.com/Real96/FRLGSwitchSeedFarmer/tree/better_usb_binding?tab=readme-ov-file#how-to-find-the-switch-usb-port-and-usb-hub-numbers)).
 
 ### SKIP_PROFILE_ENABLED
 Set this to `true` when you have the option `Skip Selection Screen` (`Settings` > `Users`) turned on. The option appears only when your Switch has just one profile. This will avoid some unnecessary A presses.
