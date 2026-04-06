@@ -29,10 +29,10 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 1) Install [Python](https://www.python.org/downloads/) (be sure to add it to `PATH` during the installation)
 2) Open the terminal inside the folder of this project
    - **ONLY** if you're on Linux run:
-     1) `python -m venv ./venv` (if this is the first time you're using the script)
+     1) `python -m venv ./venv` (only if this is the first time you're using the script)
      2) `source venv/bin/activate`
      3) `sudo su`
-4) Run `pip install -r requirements.txt` to install all the needed dependencies
+4) Run `pip install -r requirements.txt` to install all the needed dependencies (only if this is the first time you're using the script)
 5) Run `python main.py`
 
 ## How to run the script without using Python
