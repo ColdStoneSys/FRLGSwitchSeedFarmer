@@ -42,6 +42,11 @@ Run the following command in the terminal:
 `for d in /sys/bus/usb/devices/*; do [[ -f $d/idVendor && -f $d/idProduct ]] || continue; [[ $(cat $d/idVendor) == "057e" && $(cat $d/idProduct) == "3000" ]] || continue; basename $d | awk -F'[-.]' '{print "\nSwitch USB port: " $NF "\n"}'; done`
 
 ### Windows
+1) Right click on Windows logo (down-left) > `Device Manager`
+2) Go to `libusbK USB Devices` > `Nintendo Switch`
+3) Right click > `Properties`
+4) In `Location` you will see a text like the following one: `Port_#0004.Hub_#0001`
+5) Pick the number after the zeros (`4` in this case)
 
 ## Usage:
 1) Set up one of the environments described above ([**Recommended setup according to reliability**](https://github.com/Real96/FRLGSwitchSeedFarmer?tab=readme-ov-file#recommended-setup-according-to-reliability))
