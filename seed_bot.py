@@ -354,9 +354,10 @@ class SeedBotUSB(SeedBot):
         hub = ports[-2] if len(ports) > 1 else None
         port = ports[-1]
 
-        return port == self.usb_port and (
-            hub == self.usb_hub if hub is not None else True
-        )
+        if self.usb_hub is None:
+            return port == self.usb_port and hub is None
+        else:
+            return port == self.usb_port and hub == self.usb_hub
 
     def get_usb_device(self):
         if platform.system() == "Windows":
