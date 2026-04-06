@@ -35,9 +35,10 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 1) Download the [latest release](https://github.com/Real96/FRLGSwitchSeedFarmer/releases/tag/latest-commit) of the executable
 2) Run it
 
-## How to find USB port number
+## How to find the Switch USB port number
 ### Linux
 Run the following command in the terminal:
+
 `for d in /sys/bus/usb/devices/*; do [[ -f $d/idVendor && -f $d/idProduct ]] || continue; [[ $(cat $d/idVendor) == "057e" && $(cat $d/idProduct) == "3000" ]] || continue; basename $d | awk -F'[-.]' '{print "\nSwitch USB port: " $NF "\n"}'; done`
 
 ### Windows
