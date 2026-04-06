@@ -397,7 +397,7 @@ class SeedBotUSB(SeedBot):
             if not device:
                 raise Exception("No Switch USB devices found")
 
-            return device
+            return device[0]
         else:
             raise Exception("OS System not supported")
 
