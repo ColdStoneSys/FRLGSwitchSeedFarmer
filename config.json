@@ -9,7 +9,8 @@
     "PROCESSED_FILE_NAME_BASE": "Processed_Sysbot_Seeds",
 	"PROCESSED_TIME_UNIT": 16,
     "USB": false,
-    "USB_PORT": 11,
+    "USB_PORT": 1,
+    "USB_HUB": 1,
     "SKIP_PROFILE_ENABLED": false,
     "DEBUG": false
 }

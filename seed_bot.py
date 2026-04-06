@@ -315,8 +315,9 @@ class SeedBotIP(SeedBot):
 
 
 class SeedBotUSB(SeedBot):
-    def __init__(self, usb_port, skip_profile):
+    def __init__(self, usb_port, usb_hub, skip_profile):
         self.usb_port = usb_port
+        self.usb_hub = usb_hub
         super().__init__(skip_profile)
 
     def get_switch_usb_locations(self):
@@ -326,7 +327,7 @@ class SeedBotUSB(SeedBot):
             r"Get-PnpDevice -PresentOnly | "
             r"Where-Object {$_.InstanceId -like 'USB\VID_057E&PID_3000*'} | "
             r"Get-PnpDeviceProperty DEVPKEY_Device_LocationInfo | "
-            r"Select-Object -ExpandProperty Data",
+            r"Select-Object -ExpandProperty Data | Sort-Object",
         ]
         result = subprocess.run(cmd, capture_output=True, text=True)
 
@@ -337,8 +338,18 @@ class SeedBotUSB(SeedBot):
 
         return int(match.group(1)) if match else None
 
-    def match_port(self, dev):
-        return dev.port_number == self.usb_port
+    def extract_hub_number(self, location):
+        match = re.search(r"Hub_#(\d+)", location)
+
+        return int(match.group(1)) if match else None
+
+    def match_port_and_hub(self, dev):
+        ports = dev.port_numbers  # tuple like (hub, port)
+
+        if not ports or len(ports) < 2:
+            return ports[-1] == self.usb_port
+        else:
+            return ports[-2] == self.usb_hub and ports[-1] == self.usb_port
 
     def get_usb_device(self):
         if platform.system() == "Windows":
@@ -348,13 +359,14 @@ class SeedBotUSB(SeedBot):
             # Find index of the Switch USB port
             for i, location in enumerate(locations):
                 port = self.extract_port_number(location)
+                hub = self.extract_hub_number(location)
 
-                if port == self.usb_port:
+                if port == self.usb_port and hub == self.usb_hub:
                     usb_index = i
                     break
 
             if usb_index is None:
-                raise Exception(f"No Switch USB device found on port {self.usb_port}")
+                raise Exception(f"No Switch USB device found on port {self.usb_port} and hub {self.usb_hub}")
 
             devices = list(core.find(find_all=True, idVendor=0x057E, idProduct=0x3000))
 
@@ -363,19 +375,19 @@ class SeedBotUSB(SeedBot):
 
             return devices[usb_index]
         elif platform.system() == "Linux":
-            devices = list(
+            device = list(
                 core.find(
                     find_all=True,
                     idVendor=0x057E,
                     idProduct=0x3000,
-                    custom_match=self.match_port,
+                    custom_match=self.match_port_and_hub,
                 )
             )
 
-            if not devices:
+            if not device:
                 raise Exception("No Switch USB devices found")
 
-            return devices[0]
+            return device
         else:
             raise Exception("OS System not supported")
 
