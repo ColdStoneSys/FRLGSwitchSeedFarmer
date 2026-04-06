@@ -20,7 +20,7 @@ Python script for farming FRLG Initial Seeds on CFWed Switch
 2) Extract it and copy its content into the `/atmosphere/contents/430000000000000B/` folder on the Switch SD card
 
 ## Start sys-botbase / sys-botbase-cpp
-1) Boot Atmosphere on your Swich
+1) Boot Atmosphere on your Switch
 2) Open the Homebrew menu
 3) Run Hekate-Toolbox
 4) Turn on sys-botbase / sys-botbase-cpp
