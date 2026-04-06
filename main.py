@@ -139,7 +139,7 @@ while seeds_counter < SEEDS_TO_COLLECT and consecutive_failures < 5:
     tic = 0
     toc = 0
     first_read_delay = 0 + (LOW_VBLANK_HERALDING + 16) * 0.016
-    vblank_timeout = 3 + (LOW_VBLANK_HERALDING + 16) * 0.017
+    vblank_timeout = 4 + (LOW_VBLANK_HERALDING + 16) * 0.017
 
     if reconnect:
         first_read_delay -= 1.5
